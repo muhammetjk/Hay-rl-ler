@@ -8,7 +8,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -44,9 +43,9 @@
             padding: 0 20px;
         }
 
-        /* Landing Page */
+        /* Ana Sayfa (Landing) Stilleri - BAŞLANGIÇTA GÖSTERİLECEK */
         .landing-page {
-            display: flex;
+            display: block; /* DEĞİŞTİRİLDİ: none'dan block'a */
             min-height: 100vh;
             background: linear-gradient(135deg, #6d28d9 0%, #f472b6 100%);
             color: white;
@@ -196,8 +195,8 @@
         }
 
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background-color: var(--primary);
             color: white;
@@ -206,16 +205,6 @@
             justify-content: center;
             font-weight: bold;
             cursor: pointer;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .avatar-placeholder {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
         }
 
         .premium-badge {
@@ -359,8 +348,6 @@
             color: white;
             font-size: 4rem;
             position: relative;
-            background-size: cover;
-            background-position: center;
         }
 
         .online-indicator {
@@ -684,8 +671,6 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            background-size: cover;
-            background-position: center;
         }
 
         .chat-info h4 {
@@ -830,102 +815,6 @@
             font-size: 0.9rem;
         }
 
-        /* Avatar Selection Styles */
-        .avatar-selection {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .avatar-option {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid transparent;
-            transition: all 0.3s;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .avatar-option:hover {
-            transform: scale(1.05);
-        }
-
-        .avatar-option.selected {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(109, 40, 217, 0.5);
-        }
-
-        .avatar-option.premium-only {
-            position: relative;
-            opacity: 0.7;
-        }
-
-        .avatar-option.premium-only::after {
-            content: "₺";
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: gold;
-            color: var(--dark);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
-        /* Edit Profile Styles */
-        .profile-edit-avatar {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .current-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            background-size: cover;
-            background-position: center;
-            border: 4px solid var(--primary);
-            position: relative;
-        }
-
-        .avatar-change-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-
-        .upload-area {
-            border: 2px dashed #ddd;
-            border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-            margin: 1rem 0;
-            cursor: pointer;
-        }
-
-        .upload-area:hover {
-            border-color: var(--primary);
-        }
-
-        .upload-area i {
-            font-size: 3rem;
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-
         /* Responsive Design */
         @media (max-width: 992px) {
             .main-content {
@@ -943,10 +832,6 @@
             .landing-features {
                 flex-direction: column;
                 align-items: center;
-            }
-            
-            .avatar-selection {
-                grid-template-columns: repeat(3, 1fr);
             }
         }
 
@@ -976,10 +861,6 @@
             
             .chat-sidebar {
                 height: 200px;
-            }
-            
-            .avatar-selection {
-                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -1064,20 +945,10 @@
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
-
-        /* Edit Profile Button */
-        .edit-profile-btn {
-            background: none;
-            border: none;
-            color: var(--primary);
-            cursor: pointer;
-            font-size: 0.9rem;
-            margin-left: 1rem;
-        }
     </style>
 </head>
 <body>
-    <!-- Landing Page -->
+    <!-- Landing Page - BAŞLANGIÇTA GÖSTERİLECEK -->
     <div class="landing-page" id="landing-page">
         <div class="landing-content">
             <div class="landing-logo">
@@ -1111,8 +982,9 @@
         </div>
     </div>
 
-    <!-- App Container -->
+    <!-- App Container - BAŞLANGIÇTA GİZLENECEK -->
     <div class="app-container" id="app-container">
+        <!-- App içeriği aynı kalıyor -->
         <!-- Header -->
         <header>
             <div class="container">
@@ -1127,13 +999,10 @@
                         <a href="#" data-tab="matches">Eşleşmeler <span class="badge" id="matches-badge">0</span></a>
                         <a href="#" data-tab="messages">Mesajlar <span class="badge" id="messages-badge">0</span></a>
                         <a href="#" id="premium-link">Premium</a>
-                        <a href="#" id="edit-profile-link">Profilim</a>
                     </div>
                     
                     <div class="user-menu">
-                        <div class="avatar" id="user-avatar">
-                            <div class="avatar-placeholder">?</div>
-                        </div>
+                        <div class="avatar" id="user-avatar">?</div>
                         <div>
                             <div class="user-name" id="user-name">Yükleniyor...</div>
                             <div class="user-status" id="user-status">Ücretsiz Üye</div>
@@ -1505,24 +1374,15 @@
                 <div class="setup-step" id="setup-step-3">
                     <div class="form-group">
                         <label>Profil Fotoğrafı</label>
-                        <div id="avatar-selection-container">
-                            <p>Ücretsiz üyeler için avatar seçenekleri:</p>
-                            <div class="avatar-selection" id="avatar-selection">
-                                <!-- Avatarlar JavaScript ile yüklenecek -->
-                            </div>
-                            
-                            <div id="upload-section" style="display: none;">
-                                <p>Premium üyelere özel fotoğraf yükleme:</p>
-                                <div class="upload-area" id="upload-area">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    <p>Fotoğraf yüklemek için tıklayın veya sürükleyin</p>
-                                    <input type="file" id="profile-photo-upload" accept="image/*" style="display: none;">
-                                    <button type="button" class="avatar-change-btn" onclick="document.getElementById('profile-photo-upload').click()">
-                                        Fotoğraf Seç
-                                    </button>
-                                </div>
-                            </div>
+                        <div style="text-align: center; padding: 2rem; border: 2px dashed #ddd; border-radius: 10px; margin-bottom: 1rem;">
+                            <i class="fas fa-camera" style="font-size: 3rem; color: #64748b; margin-bottom: 1rem;"></i>
+                            <p>Fotoğraf yüklemek için tıklayın veya sürükleyin</p>
+                            <input type="file" id="profile-photo" accept="image/*" style="display: none;">
+                            <button type="button" class="filter-btn" onclick="document.getElementById('profile-photo').click()" style="width: auto; margin-top: 1rem;">
+                                Fotoğraf Seç
+                            </button>
                         </div>
+                        <small>Not: Ücretsiz üyeler fotoğraf yükleyemez. Premium üye olun.</small>
                     </div>
                     <div style="display: flex; gap: 10px;">
                         <button type="button" class="submit-btn" style="background-color: #64748b;" id="prev-step-3">Önceki</button>
@@ -1530,112 +1390,6 @@
                     </div>
                 </div>
             </form>
-        </div>
-    </div>
-    
-    <!-- Edit Profile Modal -->
-    <div class="modal" id="edit-profile-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Profili Düzenle</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            
-            <form id="edit-profile-form">
-                <div class="profile-edit-avatar">
-                    <div class="current-avatar" id="current-avatar-display">
-                        <div class="avatar-placeholder" id="avatar-placeholder">?</div>
-                    </div>
-                    <button type="button" class="avatar-change-btn" id="change-avatar-btn">Fotoğrafı Değiştir</button>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-name">Adınız</label>
-                    <input type="text" id="edit-name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-bio">Hakkımda</label>
-                    <textarea id="edit-bio" placeholder="Kendinizden bahsedin..."></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-location">Konum</label>
-                    <input type="text" id="edit-location" placeholder="Şehir" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-job">Meslek</label>
-                    <input type="text" id="edit-job" placeholder="Mesleğiniz">
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-education">Eğitim</label>
-                    <input type="text" id="edit-education" placeholder="Eğitim durumunuz">
-                </div>
-                
-                <div class="form-group">
-                    <label>İlgi Alanlarınızı Seçin (en az 3)</label>
-                    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Müzik">
-                            <span>Müzik</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Spor">
-                            <span>Spor</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Seyahat">
-                            <span>Seyahat</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Kitap">
-                            <span>Kitap</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Sinema">
-                            <span>Sinema</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Yemek">
-                            <span>Yemek</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Sanat">
-                            <span>Sanat</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Teknoloji">
-                            <span>Teknoloji</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 5px;">
-                            <input type="checkbox" name="edit-interests" value="Doğa">
-                            <span>Doğa</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">Değişiklikleri Kaydet</button>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Avatar Selection Modal -->
-    <div class="modal" id="avatar-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Profil Fotoğrafını Seç</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            
-            <div class="form-group">
-                <p id="avatar-modal-message">Aşağıdaki avatar seçeneklerinden birini seçin:</p>
-                
-                <div id="avatar-modal-content">
-                    <!-- İçerik JavaScript ile yüklenecek -->
-                </div>
-            </div>
         </div>
     </div>
     
@@ -1656,13 +1410,13 @@
                 <div class="plan-card" style="border: 1px solid #ddd; border-radius: 10px; padding: 1.5rem; text-align: center;">
                     <h3>Aylık</h3>
                     <div style="font-size: 2rem; font-weight: bold; color: var(--primary); margin: 1rem 0;">₺99</div>
-                    <button class="filter-btn upgrade-plan-btn" data-plan="monthly" style="width: 100%;">Satın Al</button>
+                    <button class="filter-btn" style="width: 100%;">Satın Al</button>
                 </div>
                 <div class="plan-card" style="border: 2px solid gold; border-radius: 10px; padding: 1.5rem; text-align: center; background-color: #fffef0;">
                     <h3>Yıllık</h3>
                     <div style="font-size: 2rem; font-weight: bold; color: var(--primary); margin: 1rem 0;">₺999</div>
                     <div style="color: var(--success); margin-bottom: 1rem;">%16 tasarruf edin!</div>
-                    <button class="filter-btn upgrade-plan-btn" data-plan="yearly" style="width: 100%; background-color: gold; color: var(--dark);">Satın Al</button>
+                    <button class="filter-btn" style="width: 100%; background-color: gold; color: var(--dark);">Satın Al</button>
                 </div>
             </div>
             
@@ -1672,8 +1426,7 @@
                 <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Sınırsız mesajlaşma</li>
                 <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Günlük 15 eşleşme hakkı</li>
                 <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Premium rozet</li>
-                <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Görsel/medya paylaşımı</li>
-                <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Özel avatar seçenekleri</li>
+                <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Görsel/medya paylaşımı</li>
             </ul>
         </div>
     </div>
@@ -1682,22 +1435,21 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // Firebase Configuration
+        // Firebase Configuration - BU SADECE ÖRNEK, GERÇEK BİR FIREBASE PROJESİ KURMALISIN
         const firebaseConfig = {
-            apiKey: "AIzaSyB2GxbYkrKshir7CIbh80kiRp8QmrjgCzY",
-            authDomain: "hayirli-isler.firebaseapp.com",
-            projectId: "hayirli-isler",
-            storageBucket: "hayirli-isler.firebasestorage.app",
-            messagingSenderId: "832397139748",
-            appId: "1:832397139748:web:5660bff139a20bda01ddb1",
-            measurementId: "G-XMB7X0RVPY"
-        };
+  apiKey: "AIzaSyB2GxbYkrKshir7CIbh80kiRp8QmrjgCzY",
+  authDomain: "hayirli-isler.firebaseapp.com",
+  projectId: "hayirli-isler",
+  storageBucket: "hayirli-isler.firebasestorage.app",
+  messagingSenderId: "832397139748",
+  appId: "1:832397139748:web:5660bff139a20bda01ddb1",
+  measurementId: "G-XMB7X0RVPY"
+};
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         // App State
         let currentUser = null;
@@ -1711,26 +1463,6 @@
             messages: 30,
             shownProfiles: 0
         };
-        
-        // Avatar URLs - Ücretsiz kullanıcılar için
-        const freeAvatars = [
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex&backgroundColor=b6e3f4",
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Taylor&backgroundColor=c0aede",
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Jordan&backgroundColor=ffd5dc",
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Riley&backgroundColor=ffdfbf",
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Casey&backgroundColor=d1d4f9",
-            "https://api.dicebear.com/7.x/avataaars/svg?seed=Avery&backgroundColor=ffd5dc"
-        ];
-        
-        // Premium avatar URLs - Premium kullanıcılar için
-        const premiumAvatars = [
-            "https://api.dicebear.com/7.x/adventurer/svg?seed=Milo&backgroundColor=b6e3f4",
-            "https://api.dicebear.com/7.x/adventurer/svg?seed=Zoe&backgroundColor=c0aede",
-            "https://api.dicebear.com/7.x/adventurer/svg?seed=Leo&backgroundColor=ffd5dc",
-            "https://api.dicebear.com/7.x/adventurer/svg?seed=Luna&backgroundColor=ffdfbf",
-            "https://api.dicebear.com/7.x/adventurer/svg?seed=Max&backgroundColor=d1d4f9",
-            "https://api.dicebear.com/7.x/adventurer/svg?seed=Chloe&backgroundColor=ffd5dc"
-        ];
 
         // DOM Elements
         const landingPage = document.getElementById('landing-page');
@@ -1738,8 +1470,6 @@
         const loginModal = document.getElementById('login-modal');
         const registerModal = document.getElementById('register-modal');
         const profileSetupModal = document.getElementById('profile-setup-modal');
-        const editProfileModal = document.getElementById('edit-profile-modal');
-        const avatarModal = document.getElementById('avatar-modal');
         const premiumModal = document.getElementById('premium-modal');
         const profileContainer = document.getElementById('profile-container');
         const matchesContainer = document.getElementById('matches-container');
@@ -1753,25 +1483,32 @@
         const userName = document.getElementById('user-name');
         const userStatus = document.getElementById('user-status');
         const toast = document.getElementById('toast');
-        const avatarSelection = document.getElementById('avatar-selection');
 
         // Initialize App
         document.addEventListener('DOMContentLoaded', function() {
             console.log("DOM yüklendi, uygulama başlatılıyor...");
             
-            // Başlangıçta landing page göster
-            showLanding();
+            // Başlangıçta landing page gösteriliyor (CSS'de display:block olarak ayarlandı)
+            // App container gizli (CSS'de display:none olarak ayarlandı)
             
-            // Firebase connection check
-            setTimeout(() => {
-                if (!firebase.apps.length) {
-                    console.error("Firebase başlatılamadı!");
-                    showToast("Sunucu bağlantısı kurulamadı. Lütfen sayfayı yenileyin.", "error");
+            // Firebase auth state kontrolü
+            auth.onAuthStateChanged(async (user) => {
+                console.log("Auth state değişti:", user ? "Kullanıcı var" : "Kullanıcı yok");
+                if (user) {
+                    currentUser = user;
+                    await loadUserData();
+                    if (userData && userData.profileCompleted) {
+                        showApp();
+                    } else if (userData) {
+                        showApp();
+                        profileSetupModal.classList.add('active');
+                    }
+                } else {
+                    showLanding();
                 }
-            }, 2000);
+            });
             
             setupEventListeners();
-            loadAvatars();
         });
 
         // Show Toast Notification
@@ -1788,78 +1525,18 @@
             }, 3000);
         }
 
-        // Load avatars for selection
-        function loadAvatars() {
-            if (!avatarSelection) return;
-            
-            avatarSelection.innerHTML = '';
-            
-            // Ücretsiz avatarları yükle
-            freeAvatars.forEach((avatarUrl, index) => {
-                const avatarOption = document.createElement('div');
-                avatarOption.className = 'avatar-option';
-                avatarOption.style.backgroundImage = `url(${avatarUrl})`;
-                avatarOption.setAttribute('data-avatar', avatarUrl);
-                avatarOption.setAttribute('data-type', 'free');
-                
-                avatarOption.addEventListener('click', function() {
-                    document.querySelectorAll('.avatar-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                    
-                    // Seçili avatarı kaydet
-                    if (userData) {
-                        userData.selectedAvatar = avatarUrl;
-                        userData.avatarType = 'free';
-                    }
-                });
-                
-                avatarSelection.appendChild(avatarOption);
-            });
-            
-            // Premium avatarları yükle (sadece premium kullanıcılar için)
-            premiumAvatars.forEach((avatarUrl, index) => {
-                const avatarOption = document.createElement('div');
-                avatarOption.className = 'avatar-option premium-only';
-                avatarOption.style.backgroundImage = `url(${avatarUrl})`;
-                avatarOption.setAttribute('data-avatar', avatarUrl);
-                avatarOption.setAttribute('data-type', 'premium');
-                
-                avatarOption.addEventListener('click', function() {
-                    if (!userData || !userData.premium) {
-                        showToast('Bu avatar sadece premium üyelere özeldir!', 'warning');
-                        return;
-                    }
-                    
-                    document.querySelectorAll('.avatar-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                    
-                    // Seçili avatarı kaydet
-                    if (userData) {
-                        userData.selectedAvatar = avatarUrl;
-                        userData.avatarType = 'premium';
-                    }
-                });
-                
-                avatarSelection.appendChild(avatarOption);
-            });
-        }
-
         // Load User Data from Firestore
         async function loadUserData() {
-            if (!currentUser) return;
-            
             try {
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
                 if (userDoc.exists) {
                     userData = userDoc.data();
-                    console.log("Kullanıcı verisi yüklendi:", userData);
                     updateUI();
+                    await loadProfiles();
+                    await loadMatches();
+                    await loadChats();
                 } else {
-                    // Yeni kullanıcı için varsayılan veriler oluştur
+                    // Create user document if doesn't exist
                     userData = {
                         uid: currentUser.uid,
                         email: currentUser.email,
@@ -1867,8 +1544,6 @@
                         profileCompleted: false,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         premium: false,
-                        selectedAvatar: freeAvatars[0],
-                        avatarType: 'free',
                         dailyStats: {
                             matches: 3,
                             messages: 30,
@@ -1876,7 +1551,6 @@
                         }
                     };
                     await db.collection('users').doc(currentUser.uid).set(userData);
-                    console.log("Yeni kullanıcı oluşturuldu:", userData);
                     updateUI();
                 }
             } catch (error) {
@@ -1891,9 +1565,7 @@
                 // Update user info
                 userName.textContent = userData.name || 'Kullanıcı';
                 userStatus.textContent = userData.premium ? 'Premium Üye' : 'Ücretsiz Üye';
-                
-                // Update avatar
-                updateUserAvatar();
+                userAvatar.textContent = userData.name ? userData.name.charAt(0).toUpperCase() : '?';
                 
                 // Update daily stats
                 if (userData.dailyStats) {
@@ -1904,29 +1576,6 @@
                 
                 // Show/hide premium banner
                 document.getElementById('premium-banner').style.display = userData.premium ? 'none' : 'flex';
-            }
-        }
-        
-        // Update user avatar display
-        function updateUserAvatar() {
-            if (!userData) return;
-            
-            const avatarElement = document.getElementById('user-avatar');
-            const avatarPlaceholder = avatarElement.querySelector('.avatar-placeholder');
-            
-            if (userData.photoURL) {
-                // Kullanıcının yüklediği fotoğraf
-                avatarElement.style.backgroundImage = `url(${userData.photoURL})`;
-                avatarPlaceholder.style.display = 'none';
-            } else if (userData.selectedAvatar) {
-                // Seçili avatar
-                avatarElement.style.backgroundImage = `url(${userData.selectedAvatar})`;
-                avatarPlaceholder.style.display = 'none';
-            } else {
-                // Varsayılan avatar
-                avatarElement.style.backgroundImage = '';
-                avatarPlaceholder.style.display = 'flex';
-                avatarPlaceholder.textContent = userData.name ? userData.name.charAt(0).toUpperCase() : '?';
             }
         }
 
@@ -2063,18 +1712,9 @@
             profiles.forEach(profile => {
                 const profileCard = document.createElement('div');
                 profileCard.className = 'profile-card';
-                
-                // Avatar görüntüsü
-                let avatarStyle = '';
-                if (profile.photoURL) {
-                    avatarStyle = `style="background-image: url(${profile.photoURL})"`;
-                } else if (profile.selectedAvatar) {
-                    avatarStyle = `style="background-image: url(${profile.selectedAvatar})"`;
-                }
-                
                 profileCard.innerHTML = `
-                    <div class="profile-img" ${avatarStyle}>
-                        ${!profile.photoURL && !profile.selectedAvatar ? '<i class="fas fa-user"></i>' : ''}
+                    <div class="profile-img">
+                        <i class="fas fa-user"></i>
                         ${profile.online ? '<div class="online-indicator"></div>' : ''}
                     </div>
                     <div class="profile-info">
@@ -2132,20 +1772,9 @@
             matches.forEach(match => {
                 const matchCard = document.createElement('div');
                 matchCard.className = 'profile-card';
-                
-                // Avatar görüntüsü
-                let avatarStyle = '';
-                if (match.photoURL) {
-                    avatarStyle = `style="background-image: url(${match.photoURL}); background-color: var(--secondary);"`;
-                } else if (match.selectedAvatar) {
-                    avatarStyle = `style="background-image: url(${match.selectedAvatar}); background-color: var(--secondary);"`;
-                } else {
-                    avatarStyle = 'style="background-color: var(--secondary);"';
-                }
-                
                 matchCard.innerHTML = `
-                    <div class="profile-img" ${avatarStyle}>
-                        ${!match.photoURL && !match.selectedAvatar ? '<i class="fas fa-user"></i>' : ''}
+                    <div class="profile-img" style="background-color: var(--secondary);">
+                        <i class="fas fa-user"></i>
                     </div>
                     <div class="profile-info">
                         <div class="profile-name">${match.name || 'Kullanıcı'}</div>
@@ -2185,20 +1814,8 @@
                 chatItem.className = 'chat-item';
                 chatItem.setAttribute('data-chat-id', chat.id);
                 chatItem.setAttribute('data-user-id', chat.otherUser.uid);
-                
-                // Avatar görüntüsü
-                let avatarStyle = '';
-                if (chat.otherUser.photoURL) {
-                    avatarStyle = `style="background-image: url(${chat.otherUser.photoURL})"`;
-                } else if (chat.otherUser.selectedAvatar) {
-                    avatarStyle = `style="background-image: url(${chat.otherUser.selectedAvatar})"`;
-                }
-                
                 chatItem.innerHTML = `
-                    <div class="chat-avatar" ${avatarStyle}>
-                        ${!chat.otherUser.photoURL && !chat.otherUser.selectedAvatar ? 
-                          (chat.otherUser.name ? chat.otherUser.name.charAt(0).toUpperCase() : '?') : ''}
-                    </div>
+                    <div class="chat-avatar">${chat.otherUser.name ? chat.otherUser.name.charAt(0).toUpperCase() : '?'}</div>
                     <div class="chat-info">
                         <h4>${chat.otherUser.name || 'Kullanıcı'}</h4>
                         <p>${chat.lastMessage ? (chat.lastMessage.length > 30 ? chat.lastMessage.substring(0, 30) + '...' : chat.lastMessage) : 'Henüz mesaj yok'}</p>
@@ -2362,10 +1979,7 @@
             // Update chat header
             chatHeader.innerHTML = `
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="chat-avatar" style="background-image: url(${otherUser.photoURL || otherUser.selectedAvatar || ''})">
-                        ${!otherUser.photoURL && !otherUser.selectedAvatar ? 
-                          (otherUser.name ? otherUser.name.charAt(0).toUpperCase() : '?') : ''}
-                    </div>
+                    <div class="chat-avatar">${otherUser.name ? otherUser.name.charAt(0).toUpperCase() : '?'}</div>
                     <div>
                         <h3>${otherUser.name || 'Kullanıcı'}</h3>
                         <p>${otherUser.online ? 'Çevrimiçi' : 'Çevrimdışı'}</p>
@@ -2580,273 +2194,14 @@
 
         // Show Landing Page
         function showLanding() {
-            landingPage.style.display = 'flex';
+            landingPage.style.display = 'block';
             appContainer.style.display = 'none';
         }
 
         // Show App
         function showApp() {
-            console.log("App gösteriliyor...");
             landingPage.style.display = 'none';
             appContainer.style.display = 'block';
-            
-            // UI'ı güncelle
-            updateUI();
-            
-            // Gerekli verileri yükle
-            if (currentUser) {
-                loadProfiles();
-                loadMatches();
-                loadChats();
-            }
-            
-            // Varsayılan olarak profiller sekmesini aktif et
-            document.querySelector('.tab-btn[data-tab="profiles"]').classList.add('active');
-            document.getElementById('profiles-tab').classList.add('active');
-        }
-
-        // Open Edit Profile Modal
-        function openEditProfileModal() {
-            if (!userData) return;
-            
-            // Form alanlarını doldur
-            document.getElementById('edit-name').value = userData.name || '';
-            document.getElementById('edit-bio').value = userData.bio || '';
-            document.getElementById('edit-location').value = userData.location || '';
-            document.getElementById('edit-job').value = userData.job || '';
-            document.getElementById('edit-education').value = userData.education || '';
-            
-            // İlgi alanlarını seç
-            document.querySelectorAll('input[name="edit-interests"]').forEach(checkbox => {
-                checkbox.checked = userData.interests && userData.interests.includes(checkbox.value);
-            });
-            
-            // Avatar'ı göster
-            const currentAvatarDisplay = document.getElementById('current-avatar-display');
-            const avatarPlaceholder = document.getElementById('avatar-placeholder');
-            
-            if (userData.photoURL) {
-                currentAvatarDisplay.style.backgroundImage = `url(${userData.photoURL})`;
-                avatarPlaceholder.style.display = 'none';
-            } else if (userData.selectedAvatar) {
-                currentAvatarDisplay.style.backgroundImage = `url(${userData.selectedAvatar})`;
-                avatarPlaceholder.style.display = 'none';
-            } else {
-                currentAvatarDisplay.style.backgroundImage = '';
-                avatarPlaceholder.style.display = 'flex';
-                avatarPlaceholder.textContent = userData.name ? userData.name.charAt(0).toUpperCase() : '?';
-            }
-            
-            editProfileModal.classList.add('active');
-        }
-        
-        // Open Avatar Selection Modal
-        function openAvatarModal() {
-            const avatarModalContent = document.getElementById('avatar-modal-content');
-            const avatarModalMessage = document.getElementById('avatar-modal-message');
-            
-            avatarModalContent.innerHTML = '';
-            
-            if (userData.premium) {
-                avatarModalMessage.textContent = 'Premium avatar seçeneklerinden birini seçin veya kendi fotoğrafınızı yükleyin:';
-                
-                // Upload section
-                const uploadSection = document.createElement('div');
-                uploadSection.innerHTML = `
-                    <div class="upload-area" id="avatar-upload-area" style="margin-bottom: 2rem;">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Kendi fotoğrafınızı yüklemek için tıklayın</p>
-                        <input type="file" id="custom-avatar-upload" accept="image/*" style="display: none;">
-                        <button type="button" class="avatar-change-btn" onclick="document.getElementById('custom-avatar-upload').click()">
-                            Fotoğraf Yükle
-                        </button>
-                    </div>
-                `;
-                avatarModalContent.appendChild(uploadSection);
-                
-                // Upload event listener
-                document.getElementById('custom-avatar-upload').addEventListener('change', handleAvatarUpload);
-            } else {
-                avatarModalMessage.textContent = 'Ücretsiz avatar seçeneklerinden birini seçin:';
-            }
-            
-            // Avatar selection grid
-            const avatarGrid = document.createElement('div');
-            avatarGrid.className = 'avatar-selection';
-            avatarGrid.style.marginTop = '1rem';
-            
-            // Free avatars
-            freeAvatars.forEach((avatarUrl, index) => {
-                const avatarOption = document.createElement('div');
-                avatarOption.className = 'avatar-option';
-                avatarOption.style.backgroundImage = `url(${avatarUrl})`;
-                
-                // Eğer bu avatar seçiliyse, selected class'ını ekle
-                if (userData.selectedAvatar === avatarUrl && userData.avatarType === 'free') {
-                    avatarOption.classList.add('selected');
-                }
-                
-                avatarOption.addEventListener('click', async function() {
-                    document.querySelectorAll('.avatar-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    this.classList.add('selected');
-                    
-                    // Avatar'ı güncelle
-                    await updateAvatar(avatarUrl, 'free');
-                    
-                    // Modal'ı kapat
-                    setTimeout(() => {
-                        avatarModal.classList.remove('active');
-                        showToast('Profil fotoğrafı güncellendi', 'success');
-                    }, 500);
-                });
-                
-                avatarGrid.appendChild(avatarOption);
-            });
-            
-            // Premium avatars (sadece premium kullanıcılar için)
-            if (userData.premium) {
-                premiumAvatars.forEach((avatarUrl, index) => {
-                    const avatarOption = document.createElement('div');
-                    avatarOption.className = 'avatar-option premium-only';
-                    avatarOption.style.backgroundImage = `url(${avatarUrl})`;
-                    
-                    // Eğer bu avatar seçiliyse, selected class'ını ekle
-                    if (userData.selectedAvatar === avatarUrl && userData.avatarType === 'premium') {
-                        avatarOption.classList.add('selected');
-                    }
-                    
-                    avatarOption.addEventListener('click', async function() {
-                        document.querySelectorAll('.avatar-option').forEach(opt => {
-                            opt.classList.remove('selected');
-                        });
-                        this.classList.add('selected');
-                        
-                        // Avatar'ı güncelle
-                        await updateAvatar(avatarUrl, 'premium');
-                        
-                        // Modal'ı kapat
-                        setTimeout(() => {
-                            avatarModal.classList.remove('active');
-                            showToast('Profil fotoğrafı güncellendi', 'success');
-                        }, 500);
-                    });
-                    
-                    avatarGrid.appendChild(avatarOption);
-                });
-            }
-            
-            avatarModalContent.appendChild(avatarGrid);
-            avatarModal.classList.add('active');
-        }
-        
-        // Handle avatar upload
-        async function handleAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            // Check file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                showToast('Dosya boyutu 5MB\'dan küçük olmalıdır', 'error');
-                return;
-            }
-            
-            // Check file type
-            if (!file.type.match('image.*')) {
-                showToast('Sadece resim dosyaları yükleyebilirsiniz', 'error');
-                return;
-            }
-            
-            try {
-                // Show loading
-                showToast('Fotoğraf yükleniyor...', 'info');
-                
-                // Upload to Firebase Storage
-                const storageRef = storage.ref();
-                const avatarRef = storageRef.child(`avatars/${currentUser.uid}/${Date.now()}_${file.name}`);
-                const uploadTask = await avatarRef.put(file);
-                const downloadURL = await uploadTask.ref.getDownloadURL();
-                
-                // Update user data
-                await db.collection('users').doc(currentUser.uid).update({
-                    photoURL: downloadURL,
-                    selectedAvatar: null,
-                    avatarType: 'custom'
-                });
-                
-                // Update local user data
-                userData.photoURL = downloadURL;
-                userData.selectedAvatar = null;
-                userData.avatarType = 'custom';
-                
-                // Update UI
-                updateUserAvatar();
-                
-                // Close modal
-                avatarModal.classList.remove('active');
-                showToast('Profil fotoğrafı başarıyla yüklendi', 'success');
-                
-            } catch (error) {
-                console.error('Error uploading avatar:', error);
-                showToast('Fotoğraf yüklenirken hata oluştu', 'error');
-            }
-        }
-        
-        // Update avatar
-        async function updateAvatar(avatarUrl, avatarType) {
-            try {
-                // Update user data in Firestore
-                await db.collection('users').doc(currentUser.uid).update({
-                    selectedAvatar: avatarUrl,
-                    avatarType: avatarType,
-                    photoURL: null // Custom fotoğrafı temizle
-                });
-                
-                // Update local user data
-                userData.selectedAvatar = avatarUrl;
-                userData.avatarType = avatarType;
-                userData.photoURL = null;
-                
-                // Update UI
-                updateUserAvatar();
-                
-            } catch (error) {
-                console.error('Error updating avatar:', error);
-                throw error;
-            }
-        }
-        
-        // Upgrade to premium
-        async function upgradeToPremium(plan) {
-            try {
-                // Show loading
-                showToast('Premium üyelik işleniyor...', 'info');
-                
-                // Update user data
-                await db.collection('users').doc(currentUser.uid).update({
-                    premium: true,
-                    premiumSince: firebase.firestore.FieldValue.serverTimestamp(),
-                    premiumPlan: plan
-                });
-                
-                // Update local user data
-                userData.premium = true;
-                userData.premiumPlan = plan;
-                
-                // Update UI
-                updateUI();
-                
-                // Close modal
-                premiumModal.classList.remove('active');
-                
-                // Show success message
-                showToast(`Tebrikler! ${plan === 'monthly' ? 'Aylık' : 'Yıllık'} premium üye oldunuz!`, 'success');
-                
-            } catch (error) {
-                console.error('Error upgrading to premium:', error);
-                showToast('Premium üyelik işlenirken hata oluştu', 'error');
-            }
         }
 
         // Setup Event Listeners
@@ -2896,12 +2251,6 @@
                         document.querySelector(`.tab-btn[data-tab="${tabId}"]`).click();
                     }
                 });
-            });
-            
-            // Edit profile link
-            document.getElementById('edit-profile-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                openEditProfileModal();
             });
 
             // Modal controls
@@ -3014,8 +2363,6 @@
                         profileCompleted: false,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                         premium: false,
-                        selectedAvatar: freeAvatars[0],
-                        avatarType: 'free',
                         dailyStats: {
                             matches: 3,
                             messages: 30,
@@ -3074,10 +2421,6 @@
                     return;
                 }
                 
-                // Get selected avatar
-                const selectedAvatar = userData?.selectedAvatar || freeAvatars[0];
-                const avatarType = userData?.avatarType || 'free';
-                
                 try {
                     // Update user document
                     await db.collection('users').doc(currentUser.uid).update({
@@ -3086,8 +2429,6 @@
                         job: job,
                         education: education,
                         interests: interests,
-                        selectedAvatar: selectedAvatar,
-                        avatarType: avatarType,
                         profileCompleted: true,
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
@@ -3114,72 +2455,6 @@
 
             document.getElementById('prev-step-2').addEventListener('click', () => showSetupStep(1));
             document.getElementById('prev-step-3').addEventListener('click', () => showSetupStep(2));
-            
-            // Profile setup step 3'te premium kontrolü
-            document.getElementById('step-3').addEventListener('click', function() {
-                const uploadSection = document.getElementById('upload-section');
-                if (userData && userData.premium) {
-                    uploadSection.style.display = 'block';
-                } else {
-                    uploadSection.style.display = 'none';
-                }
-            });
-
-            // Edit profile form
-            document.getElementById('edit-profile-form').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const name = document.getElementById('edit-name').value;
-                const bio = document.getElementById('edit-bio').value;
-                const location = document.getElementById('edit-location').value;
-                const job = document.getElementById('edit-job').value;
-                const education = document.getElementById('edit-education').value;
-                
-                // Get selected interests
-                const interestCheckboxes = document.querySelectorAll('input[name="edit-interests"]:checked');
-                const interests = Array.from(interestCheckboxes).map(cb => cb.value);
-                
-                if (interests.length < 3) {
-                    showToast('En az 3 ilgi alanı seçmelisiniz', 'warning');
-                    return;
-                }
-                
-                try {
-                    // Update user document
-                    await db.collection('users').doc(currentUser.uid).update({
-                        name: name,
-                        bio: bio,
-                        location: location,
-                        job: job,
-                        education: education,
-                        interests: interests,
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    // Update local user data
-                    userData.name = name;
-                    userData.bio = bio;
-                    userData.location = location;
-                    userData.job = job;
-                    userData.education = education;
-                    userData.interests = interests;
-                    
-                    // Update UI
-                    updateUI();
-                    
-                    editProfileModal.classList.remove('active');
-                    showToast('Profil başarıyla güncellendi!', 'success');
-                    
-                } catch (error) {
-                    console.error('Error updating profile:', error);
-                    showToast('Profil güncellenirken hata oluştu', 'error');
-                }
-            });
-            
-            // Change avatar button
-            document.getElementById('change-avatar-btn').addEventListener('click', function() {
-                openAvatarModal();
-            });
 
             // Premium upgrade
             document.getElementById('upgrade-btn').addEventListener('click', () => {
@@ -3189,14 +2464,6 @@
             document.getElementById('premium-link').addEventListener('click', (e) => {
                 e.preventDefault();
                 premiumModal.classList.add('active');
-            });
-            
-            // Premium plan buttons
-            document.querySelectorAll('.upgrade-plan-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const plan = this.getAttribute('data-plan');
-                    upgradeToPremium(plan);
-                });
             });
 
             // Apply filters
@@ -3243,26 +2510,6 @@
             window.addEventListener('click', function(e) {
                 if (e.target.classList.contains('modal')) {
                     e.target.classList.remove('active');
-                }
-            });
-            
-            // Firebase auth state listener
-            auth.onAuthStateChanged(async (user) => {
-                console.log("Auth state değişti:", user ? "Kullanıcı var" : "Kullanıcı yok");
-                if (user) {
-                    currentUser = user;
-                    await loadUserData();
-                    
-                    if (userData && userData.profileCompleted) {
-                        showApp();
-                    } else if (userData) {
-                        showApp();
-                        setTimeout(() => {
-                            profileSetupModal.classList.add('active');
-                        }, 500);
-                    }
-                } else {
-                    showLanding();
                 }
             });
         }
