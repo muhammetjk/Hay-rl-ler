@@ -3,447 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Tanışma Platformu</title>
-    <!-- Firebase SDK -->
+    <title>ModernTanışma - Güvenli Tanışma Platformu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FIREBASE SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #6d28d9;
-            --primary-dark: #5b21b6;
-            --secondary: #f472b6;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-        }
-
+        /* TEMEL STİLLER */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            background-color: #f1f5f9;
-            color: var(--dark);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
-        /* Ana Sayfa (Landing) Stilleri - BAŞLANGIÇTA GÖSTERİLECEK */
-        .landing-page {
-            display: block; /* DEĞİŞTİRİLDİ: none'dan block'a */
-            min-height: 100vh;
-            background: linear-gradient(135deg, #6d28d9 0%, #f472b6 100%);
-            color: white;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1000;
-        }
-
-        .landing-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .landing-logo {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .landing-title {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .landing-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .landing-features {
-            display: flex;
-            gap: 2rem;
-            margin: 3rem 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .feature {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            width: 250px;
-        }
-
-        .feature i {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--secondary);
-        }
-
-        .landing-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .landing-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: transform 0.3s;
-        }
-
-        .landing-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        .landing-btn.primary {
-            background-color: white;
-            color: var(--primary);
-        }
-
-        .landing-btn.secondary {
-            background-color: transparent;
-            color: white;
-            border: 2px solid white;
-        }
-
-        /* App Container */
-        .app-container {
-            display: none;
-        }
-
-        /* Header & Navigation */
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo i {
-            color: var(--secondary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .premium-badge {
-            background-color: gold;
-            color: var(--dark);
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
-        .badge {
-            background-color: var(--danger);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
+        
+        /* BUTONLAR */
+        .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
-        }
-
-        /* Main Content */
-        .main-content {
-            display: flex;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 25%;
-            background-color: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            height: fit-content;
-        }
-
-        .filter-section {
-            margin-bottom: 2rem;
-        }
-
-        .filter-section h3 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-
-        .filter-group {
-            margin-bottom: 1rem;
-        }
-
-        .filter-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .filter-group select, .filter-group input {
-            width: 100%;
-            padding: 0.7rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: white;
-        }
-
-        .filter-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: 600;
-            transition: background-color 0.3s;
-        }
-
-        .filter-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .usage-stats {
-            background-color: #f8fafc;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1.5rem;
-        }
-
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        /* Profile Cards */
-        .content-area {
-            width: 75%;
-        }
-
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .content-header h2 {
-            color: var(--dark);
-        }
-
-        .profile-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .profile-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .profile-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        .profile-img {
-            height: 200px;
-            background-color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 4rem;
-            position: relative;
-        }
-
-        .online-indicator {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            width: 12px;
-            height: 12px;
-            background-color: var(--success);
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-
-        .profile-info {
-            padding: 1.5rem;
-        }
-
-        .profile-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .profile-age {
-            color: var(--gray);
-            font-weight: 500;
-        }
-
-        .profile-location {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin: 0.5rem 0;
-            color: var(--gray);
-        }
-
-        .profile-bio {
-            margin: 0.8rem 0;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-
-        .profile-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 1rem;
-        }
-
-        .tag {
-            background-color: #e0e7ff;
-            color: var(--primary);
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-
-        .profile-actions {
-            display: flex;
             gap: 10px;
-            margin-top: 1.2rem;
-        }
-
-        .action-btn {
-            flex: 1;
-            padding: 0.7rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            padding: 14px 28px;
+            border-radius: 50px;
             font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+            color: white;
+        }
+        
+        .btn-outline-light {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-outline-light:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+        }
+        
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 18px;
+        }
+        
+        .btn-xl {
+            padding: 20px 40px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        
+        /* NAVBAR */
+        .navbar {
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            color: #ec4899;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            padding: 200px 0 100px;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 60px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 22px;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        
+        /* HOW IT WORKS SECTION */
+        .how-it-works {
+            padding: 100px 0;
+            background: white;
+            color: #1f2937;
+            margin-top: 50px;
+            border-radius: 40px 40px 0 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            font-size: 20px;
+            color: #6b7280;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .step {
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            transition: all 0.3s;
-        }
-
-        .like-btn {
-            background-color: var(--primary);
+            font-size: 32px;
+            font-weight: 800;
+            margin: 0 auto 30px;
             color: white;
         }
-
-        .like-btn:hover {
-            background-color: var(--primary-dark);
+        
+        .step-content h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #1f2937;
         }
-
-        .dislike-btn {
-            background-color: #f1f5f9;
-            color: var(--dark);
+        
+        .step-content p {
+            color: #6b7280;
+            line-height: 1.6;
         }
-
-        .dislike-btn:hover {
-            background-color: #e2e8f0;
-        }
-
-        /* Auth Modals */
+        
+        /* MODAL */
         .modal {
             display: none;
             position: fixed;
@@ -451,2114 +231,715 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
-
+        
         .modal.active {
             display: flex;
         }
-
+        
         .modal-content {
-            background-color: white;
-            border-radius: 10px;
-            width: 90%;
+            background: white;
+            border-radius: 20px;
+            width: 100%;
             max-width: 500px;
-            padding: 2rem;
             max-height: 90vh;
             overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
         }
-
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .modal-header {
+            padding: 30px;
+            border-bottom: 1px solid #e5e7eb;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
         }
-
+        
         .modal-header h2 {
-            color: var(--primary);
+            margin: 0;
+            color: #1f2937;
+            font-size: 28px;
         }
-
+        
         .close-modal {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 24px;
+            color: #6b7280;
             cursor: pointer;
-            color: var(--gray);
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .form-group textarea {
-            height: 100px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.9rem 1.5rem;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: 600;
-            font-size: 1rem;
-            margin-top: 1rem;
-            transition: background-color 0.3s;
-        }
-
-        .submit-btn:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .form-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: var(--gray);
-        }
-
-        .form-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        /* Premium Banner */
-        .premium-banner {
-            background: linear-gradient(135deg, #fce7f3 0%, #f0f9ff 100%);
-            border: 2px solid gold;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .premium-content h3 {
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .premium-features {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 1rem;
-        }
-
-        .premium-feature {
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
+            justify-content: center;
+            border-radius: 50%;
         }
-
-        .premium-feature i {
-            color: gold;
+        
+        .close-modal:hover {
+            background: #f3f4f6;
+            color: #1f2937;
         }
-
-        .upgrade-btn {
-            background-color: gold;
-            color: var(--dark);
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        /* Tab System */
-        .tabs {
+        
+        /* FORM STİLLERİ */
+        .auth-tabs {
             display: flex;
-            border-bottom: 1px solid #e2e8f0;
-            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
         }
-
-        .tab-btn {
-            padding: 0.8rem 1.5rem;
+        
+        .auth-tab {
+            flex: 1;
+            padding: 20px;
             background: none;
             border: none;
-            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-size: 16px;
             font-weight: 600;
-            color: var(--gray);
-            position: relative;
+            color: #6b7280;
+            cursor: pointer;
         }
-
-        .tab-btn.active {
-            color: var(--primary);
+        
+        .auth-tab.active {
+            color: #7c3aed;
+            border-bottom-color: #7c3aed;
         }
-
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background-color: var(--primary);
-        }
-
+        
         .tab-content {
+            padding: 30px;
             display: none;
         }
-
+        
         .tab-content.active {
             display: block;
         }
-
-        /* Messaging Interface */
-        .chat-container {
-            display: flex;
-            height: 500px;
-            background-color: white;
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #d1d5db;
             border-radius: 10px;
-            overflow: hidden;
+            font-size: 16px;
+            transition: all 0.3s;
         }
-
-        .chat-sidebar {
-            width: 30%;
-            border-right: 1px solid #e2e8f0;
-            overflow-y: auto;
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         }
-
-        .chat-list {
-            list-style: none;
+        
+        .form-help {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #6b7280;
         }
-
-        .chat-item {
-            padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background-color 0.3s;
+        
+        .form-help a {
+            color: #7c3aed;
+            text-decoration: none;
         }
-
-        .chat-item:hover, .chat-item.active {
-            background-color: #f8fafc;
+        
+        .form-help a:hover {
+            text-decoration: underline;
         }
-
-        .chat-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary);
+        
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1f2937;
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
+            padding: 20px 25px;
+            border-radius: 10px;
+            box-shadow: 0 20px 25px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 3000;
+            animation: toastSlideIn 0.3s ease;
+            max-width: 400px;
+            font-size: 16px;
+            font-weight: 500;
         }
-
-        .chat-info h4 {
-            font-size: 1rem;
-            margin-bottom: 2px;
+        
+        @keyframes toastSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
-
-        .chat-info p {
-            font-size: 0.8rem;
-            color: var(--gray);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 150px;
-        }
-
-        .chat-main {
-            width: 70%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .chat-messages {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .message {
-            max-width: 70%;
-            padding: 0.8rem 1rem;
-            border-radius: 15px;
-            position: relative;
-        }
-
-        .message.received {
-            background-color: #f1f5f9;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
-
-        .message.sent {
-            background-color: var(--primary);
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
-
-        .message-time {
-            font-size: 0.7rem;
-            opacity: 0.7;
-            margin-top: 5px;
-            text-align: right;
-        }
-
-        .chat-input {
-            padding: 1rem;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            gap: 10px;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-        }
-
-        .chat-input button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Profile Setup Modal */
-        .profile-setup-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .profile-setup-steps::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 10%;
-            right: 10%;
-            height: 2px;
-            background-color: #e2e8f0;
-            z-index: 1;
-        }
-
-        .step {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background-color: #e2e8f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 0.5rem;
-            font-weight: bold;
-        }
-
-        .step.active .step-number {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .step.completed .step-number {
-            background-color: var(--success);
-            color: white;
-        }
-
-        .step-label {
-            font-size: 0.9rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .main-content {
-                flex-direction: column;
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 150px 0 80px;
             }
             
-            .sidebar, .content-area {
-                width: 100%;
+            .hero-title {
+                font-size: 36px;
             }
             
-            .profile-cards {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            .hero-subtitle {
+                font-size: 18px;
             }
             
-            .landing-features {
+            .hero-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
             
-            .profile-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .premium-banner {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-            
-            .chat-container {
-                flex-direction: column;
-                height: 600px;
-            }
-            
-            .chat-sidebar, .chat-main {
+            .btn {
                 width: 100%;
+                max-width: 300px;
             }
             
-            .chat-sidebar {
-                height: 200px;
+            .hero-stats {
+                gap: 40px;
             }
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 3rem 0 2rem;
-            margin-top: 4rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1.2rem;
-            font-size: 1.2rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.7rem;
-        }
-
-        .footer-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: white;
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid #334155;
-            color: #94a3b8;
-            font-size: 0.9rem;
-        }
-
-        /* Loading Spinner */
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 2rem auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Toast Notification */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--dark);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 5px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
-            display: none;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            
+            .stat-number {
+                font-size: 36px;
+            }
+            
+            .section-title {
+                font-size: 36px;
+            }
+            
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Landing Page - BAŞLANGIÇTA GÖSTERİLECEK -->
-    <div class="landing-page" id="landing-page">
-        <div class="landing-content">
-            <div class="landing-logo">
-                <i class="fas fa-heart"></i>
-            </div>
-            <h1 class="landing-title">ModernTanışma</h1>
-            <p class="landing-subtitle">Güvenli ve modern tanışma platformunda yeni insanlarla buluş</p>
-            
-            <div class="landing-features">
-                <div class="feature">
-                    <i class="fas fa-shield-alt"></i>
-                    <h3>Güvenli</h3>
-                    <p>Doğrulanmış profiller ve güvenli iletişim</p>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <div class="logo">
+                    <i class="fas fa-heart"></i>
+                    <span>ModernTanışma</span>
                 </div>
-                <div class="feature">
-                    <i class="fas fa-users"></i>
-                    <h3>Kaliteli Eşleşme</h3>
-                    <p>İlgi alanlarınıza göre akıllı eşleştirme</p>
-                </div>
-                <div class="feature">
-                    <i class="fas fa-comments"></i>
-                    <h3>Kolay İletişim</h3>
-                    <p>Anlık mesajlaşma ve görüntülü görüşme</p>
-                </div>
-            </div>
-            
-            <div class="landing-buttons">
-                <button class="landing-btn primary" id="landing-login-btn">Giriş Yap</button>
-                <button class="landing-btn secondary" id="landing-register-btn">Ücretsiz Kayıt Ol</button>
+                <button class="btn btn-outline-light" id="header-login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Giriş Yap
+                </button>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- App Container - BAŞLANGIÇTA GİZLENECEK -->
-    <div class="app-container" id="app-container">
-        <!-- App içeriği aynı kalıyor -->
-        <!-- Header -->
-        <header>
-            <div class="container">
-                <nav>
-                    <div class="logo">
-                        <i class="fas fa-heart"></i>
-                        <span>ModernTanışma</span>
-                    </div>
-                    
-                    <div class="nav-links">
-                        <a href="#" class="active" data-tab="profiles">Keşfet</a>
-                        <a href="#" data-tab="matches">Eşleşmeler <span class="badge" id="matches-badge">0</span></a>
-                        <a href="#" data-tab="messages">Mesajlar <span class="badge" id="messages-badge">0</span></a>
-                        <a href="#" id="premium-link">Premium</a>
-                    </div>
-                    
-                    <div class="user-menu">
-                        <div class="avatar" id="user-avatar">?</div>
-                        <div>
-                            <div class="user-name" id="user-name">Yükleniyor...</div>
-                            <div class="user-status" id="user-status">Ücretsiz Üye</div>
-                        </div>
-                        <button id="logout-btn" class="btn-logout" style="background: none; border: 1px solid #ddd; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Çıkış</button>
-                    </div>
-                </nav>
-            </div>
-        </header>
-
-        <!-- Premium Banner -->
+    <!-- Hero Section -->
+    <section class="hero">
         <div class="container">
-            <div class="premium-banner" id="premium-banner">
-                <div class="premium-content">
-                    <h3>Premium Üye Ol, Deneyimini Geliştir!</h3>
-                    <p>Sınırsız mesajlaşma, daha fazla eşleşme ve özel özelliklerin keyfini çıkar.</p>
-                    <div class="premium-features">
-                        <div class="premium-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Kendi fotoğrafını yükle</span>
-                        </div>
-                        <div class="premium-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Sınırsız mesajlaşma</span>
-                        </div>
-                        <div class="premium-feature">
-                            <i class="fas fa-check-circle"></i>
-                            <span>Günlük 15 eşleşme</span>
-                        </div>
-                    </div>
-                </div>
-                <button class="upgrade-btn" id="upgrade-btn">Premium'a Yükselt</button>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="container">
-            <div class="main-content">
-                <!-- Sidebar Filters -->
-                <div class="sidebar">
-                    <div class="filter-section">
-                        <h3>Filtreler</h3>
-                        
-                        <div class="filter-group">
-                            <label for="gender">Cinsiyet</label>
-                            <select id="gender">
-                                <option value="all">Tümü</option>
-                                <option value="female">Kadın</option>
-                                <option value="male">Erkek</option>
-                                <option value="other">Diğer</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label for="age-range">Yaş Aralığı</label>
-                            <div style="display: flex; gap: 10px;">
-                                <input type="number" id="min-age" placeholder="Min" min="18" max="100" value="25">
-                                <input type="number" id="max-age" placeholder="Max" min="18" max="100" value="45">
-                            </div>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label for="location">Konum (km)</label>
-                            <select id="location">
-                                <option value="10">10 km içinde</option>
-                                <option value="25">25 km içinde</option>
-                                <option value="50">50 km içinde</option>
-                                <option value="100">100 km içinde</option>
-                                <option value="250">250 km içinde</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label for="interests">İlgi Alanları</label>
-                            <input type="text" id="interests" placeholder="Müzik, Spor, Sanat...">
-                        </div>
-                        
-                        <button class="filter-btn" id="apply-filters">Filtrele</button>
-                        <button class="filter-btn" id="reset-filters" style="background-color: #64748b; margin-top: 10px;">Filtreleri Sıfırla</button>
-                    </div>
-                    
-                    <div class="usage-stats">
-                        <h4>Günlük Kullanım</h4>
-                        <div class="stat-item">
-                            <span>Eşleşme Hakkı:</span>
-                            <span><strong id="daily-matches">0/3</strong></span>
-                        </div>
-                        <div class="stat-item">
-                            <span>Mesaj Hakkı:</span>
-                            <span><strong id="daily-messages">0/30</strong></span>
-                        </div>
-                        <div class="stat-item">
-                            <span>Gösterilen Profiller:</span>
-                            <span id="shown-profiles">0</span>
-                        </div>
-                    </div>
+            <div class="hero-content">
+                <h1 class="hero-title">Gerçek İnsanlarla<br>Gerçek Bağlantılar Kur</h1>
+                <p class="hero-subtitle">Türkiye'nin en güvenli ve modern tanışma platformunda, ilgi alanlarınıza uygun kişilerle tanışın</p>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-lg" id="start-free-btn">
+                        <i class="fas fa-rocket"></i>
+                        ÜCRETSİZ BAŞLA
+                    </button>
+                    <button class="btn btn-outline-light btn-lg" id="learn-more-btn">
+                        <i class="fas fa-play-circle"></i>
+                        NASIL ÇALIŞIR?
+                    </button>
                 </div>
                 
-                <!-- Content Area -->
-                <div class="content-area">
-                    <div class="content-header">
-                        <h2 id="content-title">Önerilen Profiller</h2>
-                        <div class="tabs">
-                            <button class="tab-btn active" data-tab="profiles">Profiller</button>
-                            <button class="tab-btn" data-tab="matches">Eşleşmeler</button>
-                            <button class="tab-btn" data-tab="messages">Mesajlar</button>
-                        </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number">25.000+</div>
+                        <div class="stat-label">Aktif Üye</div>
                     </div>
-                    
-                    <!-- Profiles Tab -->
-                    <div class="tab-content active" id="profiles-tab">
-                        <div class="profile-cards" id="profile-container">
-                            <div class="spinner"></div>
-                        </div>
+                    <div class="stat">
+                        <div class="stat-number">5.200+</div>
+                        <div class="stat-label">Mutlu Çift</div>
                     </div>
-                    
-                    <!-- Matches Tab -->
-                    <div class="tab-content" id="matches-tab">
-                        <div class="profile-cards" id="matches-container">
-                            <div class="spinner"></div>
-                        </div>
-                    </div>
-                    
-                    <!-- Messages Tab -->
-                    <div class="tab-content" id="messages-tab">
-                        <div class="chat-container">
-                            <div class="chat-sidebar">
-                                <ul class="chat-list" id="chat-list">
-                                    <div class="spinner"></div>
-                                </ul>
-                            </div>
-                            <div class="chat-main">
-                                <div class="chat-header" id="chat-header">
-                                    <div style="text-align: center; width: 100%; padding: 2rem;">
-                                        <i class="fas fa-comments" style="font-size: 3rem; color: #e2e8f0; margin-bottom: 1rem;"></i>
-                                        <h3>Bir sohbet seçin</h3>
-                                        <p>Mesajlaşmaya başlamak için soldaki konuşmalardan birini seçin</p>
-                                    </div>
-                                </div>
-                                <div class="chat-messages" id="chat-messages">
-                                    <!-- Messages will be loaded here -->
-                                </div>
-                                <div class="chat-input" style="display: none;" id="chat-input-container">
-                                    <input type="text" id="message-input" placeholder="Bir mesaj yazın...">
-                                    <button id="send-message">
-                                        <i class="fas fa-paper-plane"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="stat">
+                        <div class="stat-number">%99.9</div>
+                        <div class="stat-label">Güvenli</div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Footer -->
-        <footer>
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-section">
-                        <h3>ModernTanışma</h3>
-                        <p>Güvenli, kontrollü ve kullanıcı dostu bir tanışma platformu.</p>
-                    </div>
-                    <div class="footer-section">
-                        <h3>Hızlı Bağlantılar</h3>
-                        <ul class="footer-links">
-                            <li><a href="#">Hakkımızda</a></li>
-                            <li><a href="#">Nasıl Çalışır?</a></li>
-                            <li><a href="#">Güvenlik</a></li>
-                            <li><a href="#">İletişim</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h3>Yasal</h3>
-                        <ul class="footer-links">
-                            <li><a href="#">Kullanım Şartları</a></li>
-                            <li><a href="#">Gizlilik Politikası</a></li>
-                            <li><a href="#">KVKK Aydınlatma Metni</a></li>
-                            <li><a href="#">Çerez Politikası</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-section">
-                        <h3>Bizi Takip Edin</h3>
-                        <ul class="footer-links">
-                            <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-                            <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                            <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="copyright">
-                    <p>© 2023 ModernTanışma. Tüm hakları saklıdır. 18 yaşından küçükler bu platformu kullanamaz.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- Auth Modals -->
-    <div class="modal" id="login-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Giriş Yap</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="login-email">E-posta</label>
-                    <input type="email" id="login-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Şifre</label>
-                    <input type="password" id="login-password" required>
-                </div>
-                <button type="submit" class="submit-btn">
-                    <span id="login-btn-text">Giriş Yap</span>
-                    <div class="spinner" style="display: none; width: 20px; height: 20px; margin: 0 auto;"></div>
-                </button>
-            </form>
-            <div class="form-footer">
-                <p>Hesabınız yok mu? <a href="#" id="show-register">Kayıt Olun</a></p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modal" id="register-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Kayıt Ol</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="register-form">
-                <div class="form-group">
-                    <label for="register-email">E-posta</label>
-                    <input type="email" id="register-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-password">Şifre (en az 6 karakter)</label>
-                    <input type="password" id="register-password" minlength="6" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-name">Adınız</label>
-                    <input type="text" id="register-name" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-birthdate">Doğum Tarihi</label>
-                    <input type="date" id="register-birthdate" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-gender">Cinsiyet</label>
-                    <select id="register-gender" required>
-                        <option value="">Seçiniz</option>
-                        <option value="male">Erkek</option>
-                        <option value="female">Kadın</option>
-                        <option value="other">Diğer</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="register-terms" required>
-                        <span>Kullanım şartlarını ve gizlilik politikasını okudum ve kabul ediyorum.</span>
-                    </label>
-                </div>
-                <button type="submit" class="submit-btn">
-                    <span id="register-btn-text">Kayıt Ol</span>
-                    <div class="spinner" style="display: none; width: 20px; height: 20px; margin: 0 auto;"></div>
-                </button>
-            </form>
-            <div class="form-footer">
-                <p>Zaten hesabınız var mı? <a href="#" id="show-login">Giriş Yapın</a></p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Profile Setup Modal -->
-    <div class="modal" id="profile-setup-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Profilini Tamamla</h2>
-                <button class="close-modal">&times;</button>
-            </div>
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">Nasıl Çalışır?</h2>
+            <p class="section-subtitle">4 kolay adımda tanışmaya başla</p>
             
-            <div class="profile-setup-steps">
-                <div class="step active" id="step-1">
+            <div class="steps">
+                <div class="step">
                     <div class="step-number">1</div>
-                    <div class="step-label">Temel Bilgiler</div>
+                    <div class="step-content">
+                        <h3>Hesap Oluştur</h3>
+                        <p>Birkaç dakika içinde ücretsiz hesabını oluştur ve profilini tamamla</p>
+                    </div>
                 </div>
-                <div class="step" id="step-2">
+                
+                <div class="step">
                     <div class="step-number">2</div>
-                    <div class="step-label">İlgi Alanları</div>
+                    <div class="step-content">
+                        <h3>Kişileri Keşfet</h3>
+                        <p>İlgi alanlarına göre seninle uyumlu profilleri görüntüle</p>
+                    </div>
                 </div>
-                <div class="step" id="step-3">
+                
+                <div class="step">
                     <div class="step-number">3</div>
-                    <div class="step-label">Fotoğraf</div>
+                    <div class="step-content">
+                        <h3>Beğen ve Eşleş</h3>
+                        <p>Beğendiğin kişilerle eşleş ve bağlantı kur</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Sohbet Et</h3>
+                        <p>Eşleştiğin kişilerle anında mesajlaşmaya başla</p>
+                    </div>
                 </div>
             </div>
             
-            <form id="profile-setup-form">
-                <!-- Step 1: Basic Info -->
-                <div class="setup-step active" id="setup-step-1">
-                    <div class="form-group">
-                        <label for="profile-bio">Hakkımda</label>
-                        <textarea id="profile-bio" placeholder="Kendinizden bahsedin..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="profile-location">Konum</label>
-                        <input type="text" id="profile-location" placeholder="Şehir" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="profile-job">Meslek</label>
-                        <input type="text" id="profile-job" placeholder="Mesleğiniz">
-                    </div>
-                    <div class="form-group">
-                        <label for="profile-education">Eğitim</label>
-                        <input type="text" id="profile-education" placeholder="Eğitim durumunuz">
-                    </div>
-                    <button type="button" class="submit-btn next-step" data-next="2">Sonraki Adım</button>
-                </div>
-                
-                <!-- Step 2: Interests -->
-                <div class="setup-step" id="setup-step-2">
-                    <div class="form-group">
-                        <label>İlgi Alanlarınızı Seçin (en az 3)</label>
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Müzik">
-                                <span>Müzik</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Spor">
-                                <span>Spor</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Seyahat">
-                                <span>Seyahat</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Kitap">
-                                <span>Kitap</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Sinema">
-                                <span>Sinema</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Yemek">
-                                <span>Yemek</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Sanat">
-                                <span>Sanat</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Teknoloji">
-                                <span>Teknoloji</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 5px;">
-                                <input type="checkbox" name="interests" value="Doğa">
-                                <span>Doğa</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <button type="button" class="submit-btn" style="background-color: #64748b;" id="prev-step-2">Önceki</button>
-                        <button type="button" class="submit-btn next-step" data-next="3">Sonraki Adım</button>
-                    </div>
-                </div>
-                
-                <!-- Step 3: Photo -->
-                <div class="setup-step" id="setup-step-3">
-                    <div class="form-group">
-                        <label>Profil Fotoğrafı</label>
-                        <div style="text-align: center; padding: 2rem; border: 2px dashed #ddd; border-radius: 10px; margin-bottom: 1rem;">
-                            <i class="fas fa-camera" style="font-size: 3rem; color: #64748b; margin-bottom: 1rem;"></i>
-                            <p>Fotoğraf yüklemek için tıklayın veya sürükleyin</p>
-                            <input type="file" id="profile-photo" accept="image/*" style="display: none;">
-                            <button type="button" class="filter-btn" onclick="document.getElementById('profile-photo').click()" style="width: auto; margin-top: 1rem;">
-                                Fotoğraf Seç
-                            </button>
-                        </div>
-                        <small>Not: Ücretsiz üyeler fotoğraf yükleyemez. Premium üye olun.</small>
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <button type="button" class="submit-btn" style="background-color: #64748b;" id="prev-step-3">Önceki</button>
-                        <button type="submit" class="submit-btn">Profili Tamamla</button>
-                    </div>
-                </div>
-            </form>
+            <div style="text-align: center; margin-top: 60px;">
+                <button class="btn btn-primary btn-xl" id="cta-start-btn">
+                    <i class="fas fa-heart"></i>
+                    HEMEN ÜCRETSİZ KAYDOL
+                </button>
+            </div>
         </div>
-    </div>
-    
-    <!-- Premium Modal -->
-    <div class="modal" id="premium-modal">
+    </section>
+
+    <!-- Auth Modal -->
+    <div class="modal" id="auth-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Premium Üyelik</h2>
+                <h2>ModernTanışma'ya Hoş Geldiniz</h2>
                 <button class="close-modal">&times;</button>
             </div>
-            <div style="text-align: center; margin-bottom: 2rem;">
-                <div class="premium-badge" style="font-size: 1.2rem; padding: 10px 20px; display: inline-block;">
-                    <i class="fas fa-crown"></i> PREMIUM
-                </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Giriş Yap</button>
+                <button class="auth-tab" data-tab="register">Kayıt Ol</button>
             </div>
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem;">
-                <div class="plan-card" style="border: 1px solid #ddd; border-radius: 10px; padding: 1.5rem; text-align: center;">
-                    <h3>Aylık</h3>
-                    <div style="font-size: 2rem; font-weight: bold; color: var(--primary); margin: 1rem 0;">₺99</div>
-                    <button class="filter-btn" style="width: 100%;">Satın Al</button>
-                </div>
-                <div class="plan-card" style="border: 2px solid gold; border-radius: 10px; padding: 1.5rem; text-align: center; background-color: #fffef0;">
-                    <h3>Yıllık</h3>
-                    <div style="font-size: 2rem; font-weight: bold; color: var(--primary); margin: 1rem 0;">₺999</div>
-                    <div style="color: var(--success); margin-bottom: 1rem;">%16 tasarruf edin!</div>
-                    <button class="filter-btn" style="width: 100%; background-color: gold; color: var(--dark);">Satın Al</button>
-                </div>
+            <div class="tab-content active" id="login-tab">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">E-posta Adresi</label>
+                        <input type="email" id="login-email" class="form-control" placeholder="ornek@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Şifre</label>
+                        <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                        <div class="form-help">
+                            <a href="#" id="forgot-password">Şifremi unuttum</a>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; margin-top: 10px;">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Giriş Yap
+                    </button>
+                </form>
             </div>
             
-            <h3 style="margin-bottom: 1rem;">Premium Özellikler</h3>
-            <ul style="list-style: none;">
-                <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Kendi profil fotoğrafını yükleme</li>
-                <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Sınırsız mesajlaşma</li>
-                <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Günlük 15 eşleşme hakkı</li>
-                <li style="padding: 0.5rem 0; border-bottom: 1px solid #f1f5f9;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Premium rozet</li>
-                <li style="padding: 0.5rem 0;"><i class="fas fa-check" style="color: var(--success); margin-right: 10px;"></i> Görsel/medya paylaşımı</li>
-            </ul>
+            <div class="tab-content" id="register-tab">
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-name">Adınız</label>
+                        <input type="text" id="register-name" class="form-control" placeholder="Adınız ve soyadınız" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-email">E-posta Adresi</label>
+                        <input type="email" id="register-email" class="form-control" placeholder="ornek@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-password">Şifre (en az 6 karakter)</label>
+                        <input type="password" id="register-password" class="form-control" placeholder="••••••••" minlength="6" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-birthdate">Doğum Tarihi</label>
+                        <input type="date" id="register-birthdate" class="form-control" required>
+                        <div class="form-help">18 yaşından büyük olmalısınız</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-gender">Cinsiyet</label>
+                        <select id="register-gender" class="form-control" required>
+                            <option value="">Seçiniz</option>
+                            <option value="male">Erkek</option>
+                            <option value="female">Kadın</option>
+                            <option value="other">Diğer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; align-items: flex-start; gap: 10px;">
+                        <input type="checkbox" id="register-terms" required style="margin-top: 5px;">
+                        <label for="register-terms" style="font-weight: normal; color: #374151; font-size: 14px;">
+                            <a href="#" style="color: #7c3aed;">Kullanım Şartları</a> ve 
+                            <a href="#" style="color: #7c3aed;">Gizlilik Politikası</a>'nı okudum ve kabul ediyorum.
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 16px; margin-top: 10px;">
+                        <i class="fas fa-user-plus"></i>
+                        Hesap Oluştur
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
+    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script>
-        // Firebase Configuration - BU SADECE ÖRNEK, GERÇEK BİR FIREBASE PROJESİ KURMALISIN
+        // FIREBASE CONFIG - KENDİ AYARLARINIZLA DEĞİŞTİRİN
         const firebaseConfig = {
-  apiKey: "AIzaSyB2GxbYkrKshir7CIbh80kiRp8QmrjgCzY",
+ apiKey: "AIzaSyB2GxbYkrKshir7CIbh80kiRp8QmrjgCzY",
   authDomain: "hayirli-isler.firebaseapp.com",
   projectId: "hayirli-isler",
   storageBucket: "hayirli-isler.firebasestorage.app",
   messagingSenderId: "832397139748",
   appId: "1:832397139748:web:5660bff139a20bda01ddb1",
   measurementId: "G-XMB7X0RVPY"
-};
+        };
 
-        // Initialize Firebase
+        // Firebase'i başlat
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // App State
-        let currentUser = null;
-        let userData = null;
-        let profiles = [];
-        let matches = [];
-        let chats = [];
-        let currentChat = null;
-        let dailyStats = {
-            matches: 3,
-            messages: 30,
-            shownProfiles: 0
-        };
+        // 1 GÜN OTOMATİK OTURUM
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 
-        // DOM Elements
-        const landingPage = document.getElementById('landing-page');
-        const appContainer = document.getElementById('app-container');
-        const loginModal = document.getElementById('login-modal');
-        const registerModal = document.getElementById('register-modal');
-        const profileSetupModal = document.getElementById('profile-setup-modal');
-        const premiumModal = document.getElementById('premium-modal');
-        const profileContainer = document.getElementById('profile-container');
-        const matchesContainer = document.getElementById('matches-container');
-        const chatList = document.getElementById('chat-list');
-        const chatMessagesContainer = document.getElementById('chat-messages');
-        const chatHeader = document.getElementById('chat-header');
-        const chatInputContainer = document.getElementById('chat-input-container');
-        const tabBtns = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-        const userAvatar = document.getElementById('user-avatar');
-        const userName = document.getElementById('user-name');
-        const userStatus = document.getElementById('user-status');
-        const toast = document.getElementById('toast');
-
-        // Initialize App
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM yüklendi, uygulama başlatılıyor...");
+            console.log('Sayfa yüklendi, Firebase hazır.');
             
-            // Başlangıçta landing page gösteriliyor (CSS'de display:block olarak ayarlandı)
-            // App container gizli (CSS'de display:none olarak ayarlandı)
+            // Elementleri seç
+            const startFreeBtn = document.getElementById('start-free-btn');
+            const learnMoreBtn = document.getElementById('learn-more-btn');
+            const ctaStartBtn = document.getElementById('cta-start-btn');
+            const headerLoginBtn = document.getElementById('header-login-btn');
+            const authModal = document.getElementById('auth-modal');
+            const closeModalBtn = document.querySelector('.close-modal');
+            const authTabs = document.querySelectorAll('.auth-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const forgotPassword = document.getElementById('forgot-password');
+            const toast = document.getElementById('toast');
             
-            // Firebase auth state kontrolü
-            auth.onAuthStateChanged(async (user) => {
-                console.log("Auth state değişti:", user ? "Kullanıcı var" : "Kullanıcı yok");
-                if (user) {
-                    currentUser = user;
-                    await loadUserData();
-                    if (userData && userData.profileCompleted) {
-                        showApp();
-                    } else if (userData) {
-                        showApp();
-                        profileSetupModal.classList.add('active');
-                    }
+            // Toast fonksiyonu
+            function showToast(message, type = 'success') {
+                toast.textContent = message;
+                
+                if (type === 'error') {
+                    toast.style.backgroundColor = '#ef4444';
+                } else if (type === 'warning') {
+                    toast.style.backgroundColor = '#f59e0b';
+                } else if (type === 'info') {
+                    toast.style.backgroundColor = '#3b82f6';
                 } else {
-                    showLanding();
-                }
-            });
-            
-            setupEventListeners();
-        });
-
-        // Show Toast Notification
-        function showToast(message, type = 'info') {
-            toast.textContent = message;
-            toast.style.backgroundColor = type === 'success' ? 'var(--success)' : 
-                                         type === 'error' ? 'var(--danger)' : 
-                                         type === 'warning' ? 'var(--warning)' : 
-                                         'var(--dark)';
-            toast.style.display = 'block';
-            
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
-        }
-
-        // Load User Data from Firestore
-        async function loadUserData() {
-            try {
-                const userDoc = await db.collection('users').doc(currentUser.uid).get();
-                if (userDoc.exists) {
-                    userData = userDoc.data();
-                    updateUI();
-                    await loadProfiles();
-                    await loadMatches();
-                    await loadChats();
-                } else {
-                    // Create user document if doesn't exist
-                    userData = {
-                        uid: currentUser.uid,
-                        email: currentUser.email,
-                        name: currentUser.displayName || '',
-                        profileCompleted: false,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        premium: false,
-                        dailyStats: {
-                            matches: 3,
-                            messages: 30,
-                            lastReset: new Date().toDateString()
-                        }
-                    };
-                    await db.collection('users').doc(currentUser.uid).set(userData);
-                    updateUI();
-                }
-            } catch (error) {
-                console.error('Error loading user data:', error);
-                showToast('Kullanıcı verileri yüklenirken hata oluştu', 'error');
-            }
-        }
-
-        // Update UI based on user data
-        function updateUI() {
-            if (userData) {
-                // Update user info
-                userName.textContent = userData.name || 'Kullanıcı';
-                userStatus.textContent = userData.premium ? 'Premium Üye' : 'Ücretsiz Üye';
-                userAvatar.textContent = userData.name ? userData.name.charAt(0).toUpperCase() : '?';
-                
-                // Update daily stats
-                if (userData.dailyStats) {
-                    dailyStats.matches = userData.dailyStats.matches || 3;
-                    dailyStats.messages = userData.dailyStats.messages || 30;
-                    updateDailyStats();
+                    toast.style.backgroundColor = '#10b981';
                 }
                 
-                // Show/hide premium banner
-                document.getElementById('premium-banner').style.display = userData.premium ? 'none' : 'flex';
-            }
-        }
-
-        // Update daily stats display
-        function updateDailyStats() {
-            document.getElementById('daily-matches').textContent = `${dailyStats.matches}/3`;
-            document.getElementById('daily-messages').textContent = `${dailyStats.messages}/30`;
-            document.getElementById('shown-profiles').textContent = dailyStats.shownProfiles || 0;
-        }
-
-        // Load Profiles from Firestore
-        async function loadProfiles() {
-            try {
-                profileContainer.innerHTML = '<div class="spinner"></div>';
+                toast.style.display = 'block';
                 
-                // Get current user's preferences
-                const userDoc = await db.collection('users').doc(currentUser.uid).get();
-                const userPreferences = userDoc.data();
-                
-                // Get profiles (excluding current user and already liked/disliked)
-                const profilesSnapshot = await db.collection('users')
-                    .where('profileCompleted', '==', true)
-                    .where('uid', '!=', currentUser.uid)
-                    .limit(20)
-                    .get();
-                
-                profiles = [];
-                profilesSnapshot.forEach(doc => {
-                    const profile = doc.data();
-                    // Add basic filtering
-                    if (userPreferences.genderPreference && userPreferences.genderPreference !== 'all') {
-                        if (profile.gender !== userPreferences.genderPreference) return;
-                    }
-                    
-                    // Calculate age
-                    if (profile.birthdate) {
-                        const birthDate = profile.birthdate.toDate();
-                        const today = new Date();
-                        profile.age = today.getFullYear() - birthDate.getFullYear();
-                    }
-                    
-                    profiles.push(profile);
-                });
-                
-                renderProfiles();
-            } catch (error) {
-                console.error('Error loading profiles:', error);
-                profileContainer.innerHTML = '<p>Profiller yüklenirken hata oluştu.</p>';
-            }
-        }
-
-        // Load Matches from Firestore
-        async function loadMatches() {
-            try {
-                matchesContainer.innerHTML = '<div class="spinner"></div>';
-                
-                const matchesSnapshot = await db.collection('matches')
-                    .where('users', 'array-contains', currentUser.uid)
-                    .where('active', '==', true)
-                    .get();
-                
-                matches = [];
-                for (const doc of matchesSnapshot.docs) {
-                    const matchData = doc.data();
-                    const otherUserId = matchData.users.find(id => id !== currentUser.uid);
-                    
-                    if (otherUserId) {
-                        const userDoc = await db.collection('users').doc(otherUserId).get();
-                        if (userDoc.exists) {
-                            const userData = userDoc.data();
-                            matches.push({
-                                id: doc.id,
-                                ...userData,
-                                matchDate: matchData.createdAt?.toDate().toLocaleDateString('tr-TR') || 'Yakın zamanda'
-                            });
-                        }
-                    }
-                }
-                
-                renderMatches();
-                updateMatchesBadge();
-            } catch (error) {
-                console.error('Error loading matches:', error);
-                matchesContainer.innerHTML = '<p>Eşleşmeler yüklenirken hata oluştu.</p>';
-            }
-        }
-
-        // Load Chats from Firestore
-        async function loadChats() {
-            try {
-                chatList.innerHTML = '<div class="spinner"></div>';
-                
-                const chatsSnapshot = await db.collection('chats')
-                    .where('participants', 'array-contains', currentUser.uid)
-                    .orderBy('lastMessageAt', 'desc')
-                    .limit(20)
-                    .get();
-                
-                chats = [];
-                for (const doc of chatsSnapshot.docs) {
-                    const chatData = doc.data();
-                    const otherUserId = chatData.participants.find(id => id !== currentUser.uid);
-                    
-                    if (otherUserId) {
-                        const userDoc = await db.collection('users').doc(otherUserId).get();
-                        if (userDoc.exists) {
-                            const userData = userDoc.data();
-                            chats.push({
-                                id: doc.id,
-                                ...chatData,
-                                otherUser: userData
-                            });
-                        }
-                    }
-                }
-                
-                renderChatList();
-                updateMessagesBadge();
-            } catch (error) {
-                console.error('Error loading chats:', error);
-                chatList.innerHTML = '<p>Sohbetler yüklenirken hata oluştu.</p>';
-            }
-        }
-
-        // Render Profiles
-        function renderProfiles() {
-            profileContainer.innerHTML = '';
-            
-            if (profiles.length === 0) {
-                profileContainer.innerHTML = '<p>Gösterilecek profil bulunamadı. Filtreleri değiştirmeyi deneyin.</p>';
-                return;
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 3000);
             }
             
-            profiles.forEach(profile => {
-                const profileCard = document.createElement('div');
-                profileCard.className = 'profile-card';
-                profileCard.innerHTML = `
-                    <div class="profile-img">
-                        <i class="fas fa-user"></i>
-                        ${profile.online ? '<div class="online-indicator"></div>' : ''}
-                    </div>
-                    <div class="profile-info">
-                        <div class="profile-name">${profile.name || 'Kullanıcı'}</div>
-                        <div class="profile-age">${profile.age ? profile.age + ' yaş' : 'Yaş bilgisi yok'}</div>
-                        <div class="profile-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${profile.location || 'Konum bilgisi yok'}</span>
-                        </div>
-                        ${profile.bio ? `<div class="profile-bio">${profile.bio.substring(0, 100)}${profile.bio.length > 100 ? '...' : ''}</div>` : ''}
-                        ${profile.interests && profile.interests.length > 0 ? `
-                            <div class="profile-tags">
-                                ${profile.interests.slice(0, 3).map(interest => `<span class="tag">${interest}</span>`).join('')}
-                                ${profile.interests.length > 3 ? '<span class="tag">+' + (profile.interests.length - 3) + '</span>' : ''}
-                            </div>
-                        ` : ''}
-                        <div class="profile-actions">
-                            <button class="action-btn dislike-btn" data-id="${profile.uid}">
-                                <i class="fas fa-times"></i> Pas
-                            </button>
-                            <button class="action-btn like-btn" data-id="${profile.uid}">
-                                <i class="fas fa-heart"></i> Beğen
-                            </button>
-                        </div>
-                    </div>
-                `;
-                profileContainer.appendChild(profileCard);
+            // Modal göster
+            function showAuthModal(activeTab = 'login') {
+                console.log('Modal açılıyor:', activeTab);
+                authModal.classList.add('active');
+                
+                // Sekmeyi ayarla
+                authTabs.forEach(tab => tab.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                document.querySelector(`.auth-tab[data-tab="${activeTab}"]`).classList.add('active');
+                document.getElementById(`${activeTab}-tab`).classList.add('active');
+            }
+            
+            // Modal kapat
+            function closeModal() {
+                authModal.classList.remove('active');
+            }
+            
+            // BUTON EVENTLERİ
+            startFreeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Ücretsiz Başla tıklandı');
+                showAuthModal('register');
             });
             
-            // Add event listeners
-            document.querySelectorAll('.like-btn').forEach(btn => {
-                btn.addEventListener('click', async function() {
-                    const profileId = this.getAttribute('data-id');
-                    await handleLike(profileId);
-                });
-            });
-            
-            document.querySelectorAll('.dislike-btn').forEach(btn => {
-                btn.addEventListener('click', async function() {
-                    const profileId = this.getAttribute('data-id');
-                    await handleDislike(profileId);
-                });
-            });
-        }
-
-        // Render Matches
-        function renderMatches() {
-            matchesContainer.innerHTML = '';
-            
-            if (matches.length === 0) {
-                matchesContainer.innerHTML = '<p>Henüz eşleşmeniz yok. Profilleri beğenmeye başlayın!</p>';
-                return;
-            }
-            
-            matches.forEach(match => {
-                const matchCard = document.createElement('div');
-                matchCard.className = 'profile-card';
-                matchCard.innerHTML = `
-                    <div class="profile-img" style="background-color: var(--secondary);">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="profile-info">
-                        <div class="profile-name">${match.name || 'Kullanıcı'}</div>
-                        <div class="profile-age">${match.age ? match.age + ' yaş' : 'Yaş bilgisi yok'}</div>
-                        <div class="profile-location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>${match.location || 'Konum bilgisi yok'}</span>
-                        </div>
-                        <div style="margin-top: 1rem; color: var(--success);">
-                            <i class="fas fa-heart"></i> ${match.matchDate} eşleşti
-                        </div>
-                        <div class="profile-actions">
-                            <button class="action-btn dislike-btn" style="background-color: #fef2f2; color: var(--danger);" onclick="unmatch('${match.id}')">
-                                <i class="fas fa-ban"></i> Eşleşmeyi Kaldır
-                            </button>
-                            <button class="action-btn like-btn" onclick="openChatWith('${match.uid}', '${match.name}')">
-                                <i class="fas fa-comment"></i> Mesaj
-                            </button>
-                        </div>
-                    </div>
-                `;
-                matchesContainer.appendChild(matchCard);
-            });
-        }
-
-        // Render Chat List
-        function renderChatList() {
-            chatList.innerHTML = '';
-            
-            if (chats.length === 0) {
-                chatList.innerHTML = '<p>Henüz sohbetiniz yok. Eşleştiğiniz kişilerle mesajlaşmaya başlayın!</p>';
-                return;
-            }
-            
-            chats.forEach(chat => {
-                const chatItem = document.createElement('li');
-                chatItem.className = 'chat-item';
-                chatItem.setAttribute('data-chat-id', chat.id);
-                chatItem.setAttribute('data-user-id', chat.otherUser.uid);
-                chatItem.innerHTML = `
-                    <div class="chat-avatar">${chat.otherUser.name ? chat.otherUser.name.charAt(0).toUpperCase() : '?'}</div>
-                    <div class="chat-info">
-                        <h4>${chat.otherUser.name || 'Kullanıcı'}</h4>
-                        <p>${chat.lastMessage ? (chat.lastMessage.length > 30 ? chat.lastMessage.substring(0, 30) + '...' : chat.lastMessage) : 'Henüz mesaj yok'}</p>
-                    </div>
-                    <div style="margin-left: auto; text-align: right;">
-                        <div style="font-size: 0.8rem; color: var(--gray);">
-                            ${chat.lastMessageAt ? formatTime(chat.lastMessageAt.toDate()) : ''}
-                        </div>
-                        ${chat.unreadCount && chat.unreadCount > 0 ? `
-                            <div style="background-color: var(--primary); color: white; width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; margin-top: 5px;">
-                                ${chat.unreadCount}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-                chatList.appendChild(chatItem);
+            learnMoreBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Nasıl Çalışır tıklandı');
                 
-                // Add click event
-                chatItem.addEventListener('click', () => openChat(chat.id, chat.otherUser));
-            });
-        }
-
-        // Format time for display
-        function formatTime(date) {
-            const now = new Date();
-            const diff = now - date;
-            const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) {
-                return date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-            } else if (diffDays === 1) {
-                return 'Dün';
-            } else if (diffDays < 7) {
-                return date.toLocaleDateString('tr-TR', { weekday: 'short' });
-            } else {
-                return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
-            }
-        }
-
-        // Handle Like Action
-        async function handleLike(profileId) {
-            if (dailyStats.matches <= 0) {
-                showToast('Günlük eşleşme hakkınız doldu. Premium üye olun veya yarın tekrar deneyin.', 'warning');
-                return;
-            }
-            
-            try {
-                // Check if the other user also liked current user
-                const existingLike = await db.collection('likes')
-                    .where('fromUserId', '==', profileId)
-                    .where('toUserId', '==', currentUser.uid)
-                    .where('active', '==', true)
-                    .get();
-                
-                if (!existingLike.empty) {
-                    // It's a match!
-                    await createMatch(profileId);
-                    showToast('Eşleşme yakalandı! Tebrikler!', 'success');
-                } else {
-                    // Just a like
-                    await db.collection('likes').add({
-                        fromUserId: currentUser.uid,
-                        toUserId: profileId,
-                        active: true,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                // How it works bölümüne kaydır
+                const howItWorksSection = document.getElementById('how-it-works');
+                if (howItWorksSection) {
+                    howItWorksSection.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
                     });
-                    showToast('Beğendiniz! Eşleşme olursa size bildireceğiz.');
+                    showToast('Nasıl çalıştığımızı görmek için aşağı kaydırın', 'info');
                 }
-                
-                // Update daily stats
-                dailyStats.matches--;
-                await updateDailyStatsInDB();
-                updateDailyStats();
-                
-                // Remove profile from view
-                const profileCard = document.querySelector(`.like-btn[data-id="${profileId}"]`).closest('.profile-card');
-                profileCard.style.display = 'none';
-                
-                // Update shown profiles count
-                dailyStats.shownProfiles = (dailyStats.shownProfiles || 0) + 1;
-                updateDailyStats();
-                
-            } catch (error) {
-                console.error('Error handling like:', error);
-                showToast('Beğenme işlemi sırasında hata oluştu', 'error');
-            }
-        }
-
-        // Handle Dislike Action
-        async function handleDislike(profileId) {
-            try {
-                await db.collection('dislikes').add({
-                    fromUserId: currentUser.uid,
-                    toUserId: profileId,
-                    active: true,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                // Remove profile from view
-                const profileCard = document.querySelector(`.dislike-btn[data-id="${profileId}"]`).closest('.profile-card');
-                profileCard.style.display = 'none';
-                
-                // Update shown profiles count
-                dailyStats.shownProfiles = (dailyStats.shownProfiles || 0) + 1;
-                updateDailyStats();
-                
-            } catch (error) {
-                console.error('Error handling dislike:', error);
-                showToast('Pas verme işlemi sırasında hata oluştu', 'error');
-            }
-        }
-
-        // Create Match
-        async function createMatch(otherUserId) {
-            try {
-                const matchId = `${currentUser.uid}_${otherUserId}`;
-                
-                await db.collection('matches').doc(matchId).set({
-                    users: [currentUser.uid, otherUserId],
-                    active: true,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                // Create chat for the match
-                await db.collection('chats').doc(matchId).set({
-                    participants: [currentUser.uid, otherUserId],
-                    lastMessage: "Eşleşme yakalandı!",
-                    lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    unreadCount: 0
-                });
-                
-                // Update matches badge
-                updateMatchesBadge();
-                
-            } catch (error) {
-                console.error('Error creating match:', error);
-            }
-        }
-
-        // Unmatch
-        async function unmatch(matchId) {
-            if (confirm('Bu eşleşmeyi kaldırmak istediğinize emin misiniz?')) {
-                try {
-                    await db.collection('matches').doc(matchId).update({
-                        active: false
-                    });
+            });
+            
+            ctaStartBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('CTA Başla tıklandı');
+                showAuthModal('register');
+            });
+            
+            headerLoginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Header Giriş Yap tıklandı');
+                showAuthModal('login');
+            });
+            
+            // Modal kapatma
+            closeModalBtn.addEventListener('click', closeModal);
+            
+            window.addEventListener('click', function(e) {
+                if (e.target === authModal) {
+                    closeModal();
+                }
+            });
+            
+            // Sekme değiştirme
+            authTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
                     
-                    await loadMatches();
-                    showToast('Eşleşme kaldırıldı', 'success');
-                } catch (error) {
-                    console.error('Error unmatching:', error);
-                    showToast('Eşleşme kaldırılırken hata oluştu', 'error');
-                }
-            }
-        }
-
-        // Open Chat
-        function openChat(chatId, otherUser) {
-            currentChat = { id: chatId, otherUser };
-            
-            // Update chat header
-            chatHeader.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <div class="chat-avatar">${otherUser.name ? otherUser.name.charAt(0).toUpperCase() : '?'}</div>
-                    <div>
-                        <h3>${otherUser.name || 'Kullanıcı'}</h3>
-                        <p>${otherUser.online ? 'Çevrimiçi' : 'Çevrimdışı'}</p>
-                    </div>
-                </div>
-                <button class="btn-report" title="Şikayet et" onclick="reportUser('${otherUser.uid}')">
-                    <i class="fas fa-flag"></i>
-                </button>
-            `;
-            
-            // Show chat input
-            chatInputContainer.style.display = 'flex';
-            
-            // Load messages
-            loadChatMessages(chatId);
-            
-            // Mark as active in list
-            document.querySelectorAll('.chat-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            document.querySelector(`.chat-item[data-chat-id="${chatId}"]`).classList.add('active');
-        }
-
-        // Open Chat with specific user
-        function openChatWith(userId, userName) {
-            // Switch to messages tab
-            tabBtns[2].click();
-            
-            // Find or create chat
-            const existingChat = chats.find(chat => 
-                chat.otherUser.uid === userId
-            );
-            
-            if (existingChat) {
-                openChat(existingChat.id, existingChat.otherUser);
-            } else {
-                // Create new chat
-                const chatId = `${currentUser.uid}_${userId}`;
-                const otherUser = { uid: userId, name: userName };
-                openChat(chatId, otherUser);
-            }
-        }
-
-        // Load Chat Messages
-        async function loadChatMessages(chatId) {
-            try {
-                chatMessagesContainer.innerHTML = '<div class="spinner"></div>';
-                
-                const messagesSnapshot = await db.collection('chats')
-                    .doc(chatId)
-                    .collection('messages')
-                    .orderBy('timestamp', 'asc')
-                    .limit(50)
-                    .get();
-                
-                chatMessagesContainer.innerHTML = '';
-                
-                if (messagesSnapshot.empty) {
-                    const welcomeMessage = document.createElement('div');
-                    welcomeMessage.className = 'message received';
-                    welcomeMessage.innerHTML = `
-                        <div>Eşleşme yakalandı! İlk mesajınızı atarak sohbete başlayın.</div>
-                        <div class="message-time">Şimdi</div>
-                    `;
-                    chatMessagesContainer.appendChild(welcomeMessage);
-                } else {
-                    messagesSnapshot.forEach(doc => {
-                        const message = doc.data();
-                        const messageDiv = document.createElement('div');
-                        messageDiv.className = `message ${message.senderId === currentUser.uid ? 'sent' : 'received'}`;
-                        messageDiv.innerHTML = `
-                            <div>${message.text}</div>
-                            <div class="message-time">${message.timestamp ? formatTime(message.timestamp.toDate()) : ''}</div>
-                        `;
-                        chatMessagesContainer.appendChild(messageDiv);
-                    });
-                }
-                
-                // Scroll to bottom
-                chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-                
-                // Mark messages as read
-                await markMessagesAsRead(chatId);
-                
-            } catch (error) {
-                console.error('Error loading messages:', error);
-                chatMessagesContainer.innerHTML = '<p>Mesajlar yüklenirken hata oluştu.</p>';
-            }
-        }
-
-        // Mark messages as read
-        async function markMessagesAsRead(chatId) {
-            try {
-                await db.collection('chats').doc(chatId).update({
-                    unreadCount: 0
-                });
-                
-                // Update badge
-                updateMessagesBadge();
-                
-            } catch (error) {
-                console.error('Error marking messages as read:', error);
-            }
-        }
-
-        // Send Message
-        async function sendMessage() {
-            const input = document.getElementById('message-input');
-            const messageText = input.value.trim();
-            
-            if (!messageText) return;
-            
-            if (dailyStats.messages <= 0 && !userData.premium) {
-                showToast('Günlük mesaj hakkınız doldu. Premium üye olun veya yarın tekrar deneyin.', 'warning');
-                return;
-            }
-            
-            if (!currentChat) {
-                showToast('Önce bir sohbet seçmelisiniz', 'warning');
-                return;
-            }
-            
-            try {
-                // Add message to Firestore
-                const messageData = {
-                    text: messageText,
-                    senderId: currentUser.uid,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    read: false
-                };
-                
-                await db.collection('chats').doc(currentChat.id)
-                    .collection('messages')
-                    .add(messageData);
-                
-                // Update chat metadata
-                await db.collection('chats').doc(currentChat.id).update({
-                    lastMessage: messageText,
-                    lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    unreadCount: firebase.firestore.FieldValue.increment(1)
-                });
-                
-                // Add message to UI
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message sent';
-                messageDiv.innerHTML = `
-                    <div>${messageText}</div>
-                    <div class="message-time">Şimdi</div>
-                `;
-                chatMessagesContainer.appendChild(messageDiv);
-                
-                // Clear input
-                input.value = '';
-                
-                // Scroll to bottom
-                chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-                
-                // Update daily stats for free users
-                if (!userData.premium) {
-                    dailyStats.messages--;
-                    await updateDailyStatsInDB();
-                    updateDailyStats();
-                }
-                
-            } catch (error) {
-                console.error('Error sending message:', error);
-                showToast('Mesaj gönderilirken hata oluştu', 'error');
-            }
-        }
-
-        // Report User
-        function reportUser(userId) {
-            const reason = prompt('Şikayet nedeninizi yazın:');
-            if (reason) {
-                db.collection('reports').add({
-                    reporterId: currentUser.uid,
-                    reportedUserId: userId,
-                    reason: reason,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showToast('Şikayetiniz alındı. Teşekkür ederiz.', 'success');
-            }
-        }
-
-        // Update Daily Stats in DB
-        async function updateDailyStatsInDB() {
-            try {
-                await db.collection('users').doc(currentUser.uid).update({
-                    'dailyStats.matches': dailyStats.matches,
-                    'dailyStats.messages': dailyStats.messages,
-                    'dailyStats.lastReset': new Date().toDateString()
-                });
-            } catch (error) {
-                console.error('Error updating daily stats:', error);
-            }
-        }
-
-        // Update Matches Badge
-        function updateMatchesBadge() {
-            const badge = document.getElementById('matches-badge');
-            badge.textContent = matches.length;
-            badge.style.display = matches.length > 0 ? 'inline-flex' : 'none';
-        }
-
-        // Update Messages Badge
-        function updateMessagesBadge() {
-            const totalUnread = chats.reduce((sum, chat) => sum + (chat.unreadCount || 0), 0);
-            const badge = document.getElementById('messages-badge');
-            badge.textContent = totalUnread;
-            badge.style.display = totalUnread > 0 ? 'inline-flex' : 'none';
-        }
-
-        // Show Landing Page
-        function showLanding() {
-            landingPage.style.display = 'block';
-            appContainer.style.display = 'none';
-        }
-
-        // Show App
-        function showApp() {
-            landingPage.style.display = 'none';
-            appContainer.style.display = 'block';
-        }
-
-        // Setup Event Listeners
-        function setupEventListeners() {
-            // Landing page buttons
-            document.getElementById('landing-login-btn').addEventListener('click', () => {
-                loginModal.classList.add('active');
-            });
-            
-            document.getElementById('landing-register-btn').addEventListener('click', () => {
-                registerModal.classList.add('active');
-            });
-
-            // Tab switching
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Update active tab button
-                    tabBtns.forEach(b => b.classList.remove('active'));
+                    authTabs.forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Update active tab content
-                    tabContents.forEach(content => {
-                        content.classList.remove('active');
-                        if (content.id === `${tabId}-tab`) {
-                            content.classList.add('active');
-                        }
-                    });
-                    
-                    // Update content title
-                    const titles = {
-                        'profiles': 'Önerilen Profiller',
-                        'matches': 'Eşleşmeler',
-                        'messages': 'Mesajlar'
-                    };
-                    document.getElementById('content-title').textContent = titles[tabId];
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    document.getElementById(`${tabName}-tab`).classList.add('active');
                 });
             });
-
-            // Navigation links
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', function(e) {
+            
+            // Şifremi unuttum
+            if (forgotPassword) {
+                forgotPassword.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const tabId = this.getAttribute('data-tab');
-                    if (tabId) {
-                        document.querySelector(`.tab-btn[data-tab="${tabId}"]`).click();
+                    const email = document.getElementById('login-email').value;
+                    if (!email) {
+                        showToast('Lütfen e-posta adresinizi girin', 'warning');
+                        return;
                     }
+                    
+                    auth.sendPasswordResetEmail(email)
+                        .then(() => {
+                            showToast('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.', 'success');
+                        })
+                        .catch((error) => {
+                            console.error("Şifre sıfırlama hatası:", error);
+                            showToast('Şifre sıfırlama isteği gönderilirken bir hata oluştu.', 'error');
+                        });
                 });
-            });
-
-            // Modal controls
-            document.querySelectorAll('.close-modal').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.closest('.modal').classList.remove('active');
-                });
-            });
-
-            // Show register modal
-            document.getElementById('show-register').addEventListener('click', function(e) {
-                e.preventDefault();
-                loginModal.classList.remove('active');
-                registerModal.classList.add('active');
-            });
-
-            // Show login modal
-            document.getElementById('show-login').addEventListener('click', function(e) {
-                e.preventDefault();
-                registerModal.classList.remove('active');
-                loginModal.classList.add('active');
-            });
-
-            // Login form
-            document.getElementById('login-form').addEventListener('submit', async function(e) {
+            }
+            
+            // LOGIN FORM SUBMIT - FIREBASE AUTH
+            loginForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
                 const email = document.getElementById('login-email').value;
                 const password = document.getElementById('login-password').value;
                 
-                const loginBtn = this.querySelector('.submit-btn');
-                const btnText = document.getElementById('login-btn-text');
-                const spinner = loginBtn.querySelector('.spinner');
-                
-                btnText.style.display = 'none';
-                spinner.style.display = 'block';
-                
-                try {
-                    await auth.signInWithEmailAndPassword(email, password);
-                    loginModal.classList.remove('active');
-                    showToast('Giriş başarılı!', 'success');
-                } catch (error) {
-                    console.error('Login error:', error);
-                    let errorMessage = 'Giriş yapılırken hata oluştu';
-                    
-                    switch (error.code) {
-                        case 'auth/user-not-found':
-                            errorMessage = 'Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı';
-                            break;
-                        case 'auth/wrong-password':
-                            errorMessage = 'Hatalı şifre';
-                            break;
-                        case 'auth/invalid-email':
-                            errorMessage = 'Geçersiz e-posta adresi';
-                            break;
-                        case 'auth/user-disabled':
-                            errorMessage = 'Bu hesap devre dışı bırakılmış';
-                            break;
-                    }
-                    
-                    showToast(errorMessage, 'error');
-                } finally {
-                    btnText.style.display = 'block';
-                    spinner.style.display = 'none';
-                }
-            });
-
-            // Register form
-            document.getElementById('register-form').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const email = document.getElementById('register-email').value;
-                const password = document.getElementById('register-password').value;
-                const name = document.getElementById('register-name').value;
-                const birthdate = new Date(document.getElementById('register-birthdate').value);
-                const gender = document.getElementById('register-gender').value;
-                
-                // Age validation
-                const today = new Date();
-                const age = today.getFullYear() - birthdate.getFullYear();
-                
-                if (age < 18) {
-                    showToast('18 yaşından küçükler kayıt olamaz.', 'error');
+                if (!email || !password) {
+                    showToast('Lütfen tüm alanları doldurun', 'error');
                     return;
                 }
                 
-                const registerBtn = this.querySelector('.submit-btn');
-                const btnText = document.getElementById('register-btn-text');
-                const spinner = registerBtn.querySelector('.spinner');
+                // E-posta format kontrolü
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast('Geçerli bir e-posta adresi girin', 'error');
+                    return;
+                }
                 
-                btnText.style.display = 'none';
-                spinner.style.display = 'block';
+                // FIREBASE İLE GİRİŞ YAP
+                try {
+                    showToast('Giriş yapılıyor...', 'info');
+                    
+                    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                    const user = userCredential.user;
+                    
+                    showToast('Giriş başarılı! Yönlendiriliyorsunuz...', 'success');
+                    
+                    // Kullanıcı bilgilerini Firestore'dan al
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    
+                    // Yönlendirme
+                    setTimeout(() => {
+                        if (userDoc.exists && userDoc.data().profileCompleted) {
+                            window.location.href = 'app.html';
+                        } else {
+                            window.location.href = 'app.html?setup=profile';
+                        }
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Firebase login error:', error);
+                    let errorMessage = 'Giriş sırasında bir hata oluştu';
+                    
+                    if (error.code === 'auth/user-not-found') {
+                        errorMessage = 'Bu e-posta adresiyle kayıtlı kullanıcı bulunamadı';
+                    } else if (error.code === 'auth/wrong-password') {
+                        errorMessage = 'Şifre hatalı';
+                    } else if (error.code === 'auth/too-many-requests') {
+                        errorMessage = 'Çok fazla başarısız deneme. Lütfen daha sonra tekrar deneyin.';
+                    }
+                    
+                    showToast(errorMessage, 'error');
+                }
+            });
+            
+            // REGISTER FORM SUBMIT - FIREBASE AUTH
+            registerForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const birthdate = document.getElementById('register-birthdate').value;
+                const gender = document.getElementById('register-gender').value;
+                const terms = document.getElementById('register-terms').checked;
+                
+                // Validation
+                if (!name || !email || !password || !birthdate || !gender) {
+                    showToast('Lütfen tüm alanları doldurun', 'error');
+                    return;
+                }
+                
+                if (!terms) {
+                    showToast('Kullanım şartlarını kabul etmelisiniz', 'error');
+                    return;
+                }
+                
+                // E-posta format kontrolü
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast('Geçerli bir e-posta adresi girin', 'error');
+                    return;
+                }
+                
+                // Age validation
+                const birthDate = new Date(birthdate);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                
+                if (age < 18) {
+                    showToast('18 yaşından küçükler kayıt olamaz', 'error');
+                    return;
+                }
                 
                 try {
-                    // Create user in Firebase Auth
+                    showToast('Kayıt yapılıyor...', 'info');
+                    
+                    // FIREBASE İLE YENİ KULLANICI OLUŞTUR
                     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    const user = userCredential.user;
                     
-                    // Update user profile
-                    await userCredential.user.updateProfile({
-                        displayName: name
-                    });
-                    
-                    // Create user document in Firestore
-                    const userData = {
-                        uid: userCredential.user.uid,
-                        email: email,
+                    // Kullanıcı bilgilerini Firestore'a kaydet
+                    await db.collection('users').doc(user.uid).set({
+                        uid: user.uid,
                         name: name,
-                        birthdate: firebase.firestore.Timestamp.fromDate(birthdate),
+                        email: email,
+                        birthdate: birthdate,
+                        age: age,
                         gender: gender,
                         profileCompleted: false,
                         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        premium: false,
-                        dailyStats: {
-                            matches: 3,
-                            messages: 30,
-                            lastReset: new Date().toDateString()
-                        }
-                    };
+                        interests: [],
+                        location: '',
+                        bio: '',
+                        photos: []
+                    });
                     
-                    await db.collection('users').doc(userCredential.user.uid).set(userData);
+                    showToast('Kayıt başarılı! Profil sayfasına yönlendiriliyorsunuz...', 'success');
                     
-                    registerModal.classList.remove('active');
-                    profileSetupModal.classList.add('active');
-                    showToast('Kayıt başarılı! Profilinizi tamamlayın.', 'success');
+                    // Yönlendirme
+                    setTimeout(() => {
+                        window.location.href = 'app.html?setup=profile';
+                    }, 1500);
                     
                 } catch (error) {
-                    console.error('Registration error:', error);
-                    let errorMessage = 'Kayıt olurken hata oluştu';
+                    console.error('Firebase registration error:', error);
+                    let errorMessage = 'Kayıt sırasında bir hata oluştu';
                     
-                    switch (error.code) {
-                        case 'auth/email-already-in-use':
-                            errorMessage = 'Bu e-posta adresi zaten kullanımda';
-                            break;
-                        case 'auth/invalid-email':
-                            errorMessage = 'Geçersiz e-posta adresi';
-                            break;
-                        case 'auth/weak-password':
-                            errorMessage = 'Şifre en az 6 karakter olmalıdır';
-                            break;
-                        case 'auth/operation-not-allowed':
-                            errorMessage = 'E-posta/şifre ile kayıt şu anda devre dışı';
-                            break;
+                    if (error.code === 'auth/email-already-in-use') {
+                        errorMessage = 'Bu e-posta adresi zaten kullanımda';
+                    } else if (error.code === 'auth/weak-password') {
+                        errorMessage = 'Şifre en az 6 karakter olmalıdır';
                     }
                     
                     showToast(errorMessage, 'error');
-                } finally {
-                    btnText.style.display = 'block';
-                    spinner.style.display = 'none';
-                }
-            });
-
-            // Profile setup form
-            document.getElementById('profile-setup-form').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const bio = document.getElementById('profile-bio').value;
-                const location = document.getElementById('profile-location').value;
-                const job = document.getElementById('profile-job').value;
-                const education = document.getElementById('profile-education').value;
-                
-                // Get selected interests
-                const interestCheckboxes = document.querySelectorAll('input[name="interests"]:checked');
-                const interests = Array.from(interestCheckboxes).map(cb => cb.value);
-                
-                if (interests.length < 3) {
-                    showToast('En az 3 ilgi alanı seçmelisiniz', 'warning');
-                    document.getElementById('step-2').click();
-                    return;
-                }
-                
-                try {
-                    // Update user document
-                    await db.collection('users').doc(currentUser.uid).update({
-                        bio: bio,
-                        location: location,
-                        job: job,
-                        education: education,
-                        interests: interests,
-                        profileCompleted: true,
-                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    profileSetupModal.classList.remove('active');
-                    showToast('Profiliniz başarıyla tamamlandı!', 'success');
-                    
-                    // Reload user data
-                    await loadUserData();
-                    
-                } catch (error) {
-                    console.error('Error saving profile:', error);
-                    showToast('Profil kaydedilirken hata oluştu', 'error');
-                }
-            });
-
-            // Profile setup steps
-            document.querySelectorAll('.next-step').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const nextStep = this.getAttribute('data-next');
-                    showSetupStep(nextStep);
-                });
-            });
-
-            document.getElementById('prev-step-2').addEventListener('click', () => showSetupStep(1));
-            document.getElementById('prev-step-3').addEventListener('click', () => showSetupStep(2));
-
-            // Premium upgrade
-            document.getElementById('upgrade-btn').addEventListener('click', () => {
-                premiumModal.classList.add('active');
-            });
-
-            document.getElementById('premium-link').addEventListener('click', (e) => {
-                e.preventDefault();
-                premiumModal.classList.add('active');
-            });
-
-            // Apply filters
-            document.getElementById('apply-filters').addEventListener('click', () => {
-                loadProfiles();
-                showToast('Filtreler uygulandı');
-            });
-
-            document.getElementById('reset-filters').addEventListener('click', () => {
-                document.getElementById('gender').value = 'all';
-                document.getElementById('min-age').value = '25';
-                document.getElementById('max-age').value = '45';
-                document.getElementById('location').value = '10';
-                document.getElementById('interests').value = '';
-                loadProfiles();
-                showToast('Filtreler sıfırlandı');
-            });
-
-            // Send message button
-            document.getElementById('send-message').addEventListener('click', sendMessage);
-
-            // Press Enter to send message
-            document.getElementById('message-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
                 }
             });
             
-            // Logout
-            document.getElementById('logout-btn').addEventListener('click', async function() {
-                if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
-                    try {
-                        await auth.signOut();
-                        showLanding();
-                        showToast('Çıkış yapıldı', 'success');
-                    } catch (error) {
-                        console.error('Logout error:', error);
-                        showToast('Çıkış yapılırken hata oluştu', 'error');
-                    }
+            // OTOMATİK GİRİŞ KONTROLÜ - EĞER GİRİŞ YAPILMIŞSA APP'E GÖNDER
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    console.log('Kullanıcı zaten giriş yapmış, app.html\'ye yönlendiriliyor...');
+                    // Hemen yönlendir
+                    window.location.href = 'app.html';
                 }
-            });
-
-            // Close modal when clicking outside
-            window.addEventListener('click', function(e) {
-                if (e.target.classList.contains('modal')) {
-                    e.target.classList.remove('active');
-                }
-            });
-        }
-
-        // Show profile setup step
-        function showSetupStep(stepNumber) {
-            // Update steps
-            document.querySelectorAll('.step').forEach(step => {
-                step.classList.remove('active', 'completed');
             });
             
-            for (let i = 1; i <= stepNumber; i++) {
-                const step = document.getElementById(`step-${i}`);
-                if (i < stepNumber) {
-                    step.classList.add('completed');
-                } else if (i === stepNumber) {
-                    step.classList.add('active');
-                }
-            }
-            
-            // Update forms
-            document.querySelectorAll('.setup-step').forEach(form => {
-                form.classList.remove('active');
-            });
-            document.getElementById(`setup-step-${stepNumber}`).classList.add('active');
-        }
-
-        // Reset daily stats at midnight
-        function resetDailyStats() {
-            const now = new Date();
-            const lastReset = userData?.dailyStats?.lastReset || '';
-            
-            if (lastReset !== now.toDateString()) {
-                dailyStats.matches = 3;
-                dailyStats.messages = 30;
-                dailyStats.shownProfiles = 0;
-                
-                if (currentUser) {
-                    updateDailyStatsInDB();
-                }
-                updateDailyStats();
-            }
-        }
-
-        // Check and reset stats periodically
-        setInterval(resetDailyStats, 60000); // Check every minute
-
-        // Initialize
-        resetDailyStats();
+            console.log('Tüm event listenerlar eklendi');
+        });
     </script>
 </body>
 </html>

@@ -1,0 +1,4655 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Tanışma Uygulaması</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Değişkenleri */
+        :root {
+            --primary-color: #7c3aed;
+            --primary-gradient: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+            --secondary-gradient: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-dark: #0f172a;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-light: #94a3b8;
+            --border-color: #e2e8f0;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-xxl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode */
+        .dark-mode {
+            --primary-color: #8b5cf6;
+            --primary-gradient: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-dark: #020617;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-light: #94a3b8;
+            --border-color: #334155;
+        }
+
+        /* Temel Stiller */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 20px 30px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            background: var(--secondary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: var(--shadow-md);
+            border: 3px solid var(--bg-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .user-avatar.online::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 14px;
+            height: 14px;
+            background: var(--success-color);
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .user-info h2 {
+            font-size: 22px;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .user-info p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-icon {
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            justify-content: center;
+            border-radius: var(--radius-full);
+            background: var(--bg-primary);
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .btn-icon:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 12px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            gap: 8px;
+            position: relative;
+        }
+
+        .nav-link {
+            flex: 1;
+            text-align: center;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: white;
+            opacity: 0.5;
+        }
+
+        .badge {
+            background: var(--danger-color);
+            color: white;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            min-width: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            gap: 30px;
+        }
+
+        .sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+            height: fit-content;
+            transition: var(--transition);
+        }
+
+        .main-feed {
+            flex: 1;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            min-height: 600px;
+        }
+
+        .feed-header {
+            padding: 28px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            position: sticky;
+            top: 154px;
+            z-index: 90;
+        }
+
+        .feed-header h2 {
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feed-content {
+            padding: 28px;
+            min-height: 400px;
+        }
+
+        /* Filter Styles */
+        .filter-section {
+            margin-bottom: 28px;
+        }
+
+        .filter-section h3 {
+            font-size: 18px;
+            margin-bottom: 18px;
+            color: var(--text-primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-group {
+            margin-bottom: 20px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        select, input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        select:focus, input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .age-range {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .age-range input {
+            flex: 1;
+        }
+
+        .age-range span {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .filter-actions .btn {
+            flex: 1;
+            padding: 14px;
+        }
+
+        .range-slider {
+            margin: 20px 0;
+        }
+
+        .range-slider input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border-color);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Profile Cards - GELİŞTİRİLMİŞ */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .profile-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 450px; /* Sabit yükseklik */
+        }
+
+        .profile-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xxl);
+        }
+
+        .profile-card.featured {
+            border: 2px solid var(--primary-color);
+        }
+
+        .profile-card.featured::before {
+            content: '🔥 ÖNE ÇIKAN';
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 2;
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-image {
+            height: 200px;
+            background: var(--secondary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .profile-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, var(--bg-primary), transparent);
+        }
+
+        .online-badge {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            width: 14px;
+            height: 14px;
+            background: var(--success-color);
+            border-radius: 50%;
+            border: 3px solid var(--bg-primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .profile-content {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .profile-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .profile-age {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-location {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .profile-location i {
+            color: var(--primary-color);
+        }
+
+        .profile-bio {
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        .tag {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .tag:hover {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .dislike-btn {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+        }
+
+        .dislike-btn:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .like-btn {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .like-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Stats */
+        .stats {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        .stats h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-value {
+            font-weight: 800;
+            font-size: 18px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Profile Detail Page */
+        .profile-detail {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .profile-header-detail {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .profile-avatar-large {
+            width: 160px;
+            height: 160px;
+            background: var(--secondary-gradient);
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            color: white;
+            font-weight: bold;
+            box-shadow: var(--shadow-lg);
+            flex-shrink: 0;
+        }
+
+        .profile-info-detail h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+
+        .profile-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-bio-detail {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .profile-sections {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .section-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .section-card h2 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .interest-item {
+            background: var(--bg-secondary);
+            padding: 16px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .interest-item:hover {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .back-button {
+            margin-bottom: 30px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 20px 28px;
+            background: var(--success-color);
+            color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            display: none;
+            max-width: 400px;
+            animation: slideIn 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .toast.warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .toast.info {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xxl);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 28px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 24px;
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: var(--radius-full);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .modal-body {
+            padding: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            transition: var(--transition);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .modal-footer {
+            padding: 24px 28px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            padding: 30px;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .admin-stat-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .admin-stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .admin-stat-value {
+            font-size: 48px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .admin-stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .admin-section {
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 30px;
+        }
+
+        .admin-section h4 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-weight: 800;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: var(--shadow-xl);
+            cursor: pointer;
+            z-index: 100;
+            transition: var(--transition);
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: var(--shadow-xxl);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .theme-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--border-color);
+            transition: var(--transition);
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "🌙";
+            height: 26px;
+            width: 26px;
+            left: 2px;
+            bottom: 2px;
+            background: var(--bg-primary);
+            transition: var(--transition);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        input:checked + .slider {
+            background: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+            content: "☀️";
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .profiles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .profile-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .header-left {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .nav-link {
+                flex: none;
+                min-width: calc(50% - 4px);
+            }
+            
+            .profile-header-detail {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 20px;
+            }
+            
+            .profile-meta {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .admin-stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-card {
+                height: 420px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-full);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: var(--radius-full);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Pulse animation for online users */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Custom checkboxes for interests */
+        .interest-checkbox {
+            display: none;
+        }
+
+        .interest-checkbox:checked + .interest-label {
+            background: var(--primary-gradient);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .interest-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .interest-label:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Match animation */
+        @keyframes matchPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .match-animation {
+            animation: matchPulse 0.5s ease 3;
+        }
+
+        /* Premium badge */
+        .premium-badge {
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 8px;
+        }
+
+        /* Yeni eklenen stiller */
+        .message-item:hover {
+            background: var(--bg-secondary);
+            transform: translateX(4px);
+        }
+        
+        .message-item.unread {
+            background: rgba(124, 58, 237, 0.05);
+        }
+        
+        .chat-message {
+            max-width: 70%;
+            margin-bottom: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .chat-message.sent {
+            margin-left: auto;
+        }
+        
+        .chat-message.received {
+            margin-right: auto;
+        }
+        
+        .message-bubble {
+            padding: 12px 16px;
+            border-radius: 18px;
+            box-shadow: var(--shadow-sm);
+            word-wrap: break-word;
+        }
+        
+        .sent .message-bubble {
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+        
+        .received .message-bubble {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 18px 18px 18px 4px;
+        }
+        
+        .message-time {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        
+        /* Arama sonuçları */
+        .search-result-item {
+            transition: var(--transition);
+        }
+        
+        .search-result-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Yeni stiller için responsive düzenlemeler */
+        @media (max-width: 768px) {
+            .profile-sections {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-message {
+                max-width: 85%;
+            }
+            
+            .message-bubble {
+                padding: 10px 14px;
+            }
+        }
+
+        /* GELİŞTİRİLMİŞ MESAJLAŞMA STİLLERİ */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chat-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--bg-primary);
+        }
+
+        .chat-header .avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .chat-header .user-info {
+            flex: 1;
+        }
+
+        .chat-header .user-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .chat-header .user-info p {
+            font-size: 12px;
+            color: var(--success-color);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--bg-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-radius: 18px 18px 18px 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            background: var(--bg-primary);
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-full);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .chat-input button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .chat-input button:hover {
+            transform: scale(1.1);
+        }
+
+        .conversation-item {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .conversation-item:hover {
+            background: var(--bg-secondary);
+        }
+
+        .conversation-item.active {
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .conversation-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .conversation-info {
+            flex: 1;
+        }
+
+        .conversation-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .conversation-last-message {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .conversation-time {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .unread-badge {
+            background: var(--primary-color);
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
+
+        /* Real-time mesaj göstergesi */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            background: var(--bg-primary);
+            border-radius: 18px;
+            width: fit-content;
+            margin-bottom: 8px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-4px);
+            }
+        }
+
+        /* Mesaj durum göstergeleri */
+        .message-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 8px;
+            font-size: 10px;
+        }
+
+        .message-status i {
+            font-size: 10px;
+        }
+
+        .message-status .sent-icon {
+            color: var(--text-light);
+        }
+
+        .message-status .delivered-icon {
+            color: var(--success-color);
+        }
+
+        .message-status .read-icon {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-heart"></i>
+                    ModernMatch
+                </div>
+                <div class="user-avatar" id="user-avatar"></div>
+                <div class="user-info">
+                    <h2 id="user-name">Yükleniyor...</h2>
+                    <p id="user-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="location-text">Konum yükleniyor</span>
+                    </p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <label class="theme-toggle">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+                <button class="btn btn-icon" id="search-profiles-btn" title="Profil Ara">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="btn btn-icon" id="notification-btn" title="Bildirimler">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="btn btn-primary" id="edit-profile-btn">
+                    <i class="fas fa-edit"></i> Profili Düzenle
+                </button>
+                <button class="btn btn-danger" id="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Çıkış
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <a href="#" class="nav-link active" id="discover-tab">
+                <i class="fas fa-compass"></i> Keşfet
+                <span class="badge" id="discover-badge" style="display: none;">0</span>
+            </a>
+            <a href="#" class="nav-link" id="matches-tab">
+                <i class="fas fa-heart"></i> Eşleşmeler
+                <span class="badge" id="matches-badge" style="display: none;">0</span>
+            </a>
+            <a href="#" class="nav-link" id="messages-tab">
+                <i class="fas fa-comments"></i> Mesajlar
+                <span class="badge" id="messages-badge" style="display: none;">0</span>
+            </a>
+            <a href="#" class="nav-link" id="likes-tab">
+                <i class="fas fa-star"></i> Beğeniler
+                <span class="badge" id="likes-badge" style="display: none;">0</span>
+            </a>
+            <a href="#" class="nav-link" id="admin-tab" style="display: none;">
+                <i class="fas fa-crown"></i> Admin
+            </a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar - Filters -->
+            <div class="sidebar">
+                <div class="filter-section">
+                    <h3><i class="fas fa-sliders-h"></i> Filtreler</h3>
+                    
+                    <div class="filter-group">
+                        <label for="gender-filter">Cinsiyet</label>
+                        <select id="gender-filter">
+                            <option value="all">Tümü</option>
+                            <option value="male">Erkek</option>
+                            <option value="female">Kadın</option>
+                            <option value="other">Diğer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Yaş Aralığı</label>
+                        <div class="range-slider">
+                            <input type="range" id="age-range" min="18" max="100" value="50">
+                            <div class="range-values">
+                                <span id="min-age-value">18</span>
+                                <span id="max-age-value">50</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="location-filter">Konum</label>
+                        <div style="position: relative;">
+                            <input type="text" id="location-filter" placeholder="Şehir veya ilçe">
+                            <button class="btn btn-icon" id="location-current" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); padding: 8px;">
+                                <i class="fas fa-location-arrow"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="distance-filter">Maksimum Mesafe (km)</label>
+                        <input type="range" id="distance-filter" min="1" max="500" value="100">
+                        <div class="range-values">
+                            <span id="distance-value">100 km</span>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>İlgi Alanları</label>
+                        <div id="interests-filter-container" style="max-height: 200px; overflow-y: auto; padding: 10px; border: 2px solid var(--border-color); border-radius: var(--radius-md);">
+                            <!-- Interests will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="filter-actions">
+                        <button class="btn btn-primary" id="apply-filters">
+                            <i class="fas fa-filter"></i> Filtrele
+                        </button>
+                        <button class="btn btn-outline" id="reset-filters">
+                            <i class="fas fa-redo"></i> Sıfırla
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="stats">
+                    <h3><i class="fas fa-chart-line"></i> İstatistikler</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">
+                            <i class="fas fa-heart"></i> Beğeniler
+                        </span>
+                        <span class="stat-value" id="likes-sent">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">
+                            <i class="fas fa-users"></i> Eşleşmeler
+                        </span>
+                        <span class="stat-value" id="total-matches">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">
+                            <i class="fas fa-eye"></i> Görüntülenme
+                        </span>
+                        <span class="stat-value" id="profile-views">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">
+                            <i class="fas fa-fire"></i> Popülerlik
+                        </span>
+                        <span class="stat-value" id="popularity-score">0%</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" id="refresh-profiles" style="width: 100%; margin-top: 20px;">
+                    <i class="fas fa-sync-alt"></i> Profilleri Yenile
+                </button>
+            </div>
+
+            <!-- Main Feed -->
+            <div class="main-feed" id="main-feed">
+                <div class="feed-header">
+                    <h2 id="feed-title">Önerilen Profiller</h2>
+                </div>
+                <div class="feed-content" id="feed-content">
+                    <div class="profiles-grid" id="profiles-container">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p>Profiller yükleniyor...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Panel (Hidden by default) -->
+            <div class="admin-panel" id="admin-panel">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-value" id="admin-total-users">0</div>
+                        <div class="admin-stat-label">Toplam Kullanıcı</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-value" id="admin-total-matches">0</div>
+                        <div class="admin-stat-label">Toplam Eşleşme</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-value" id="admin-today-active">0</div>
+                        <div class="admin-stat-label">Bugün Aktif</div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-value" id="admin-new-today">0</div>
+                        <div class="admin-stat-label">Bugün Kayıtlı</div>
+                    </div>
+                </div>
+
+                <div class="admin-actions">
+                    <button class="btn btn-primary" id="send-admin-notification">
+                        <i class="fas fa-bullhorn"></i> Bildirim Gönder
+                    </button>
+                    <button class="btn btn-outline" id="admin-manage-users">
+                        <i class="fas fa-user-cog"></i> Kullanıcı Yönetimi
+                    </button>
+                    <button class="btn btn-outline" id="admin-view-reports">
+                        <i class="fas fa-chart-bar"></i> Raporlar
+                    </button>
+                    <button class="btn btn-outline" id="admin-system-settings">
+                        <i class="fas fa-cogs"></i> Sistem Ayarları
+                    </button>
+                </div>
+
+                <div class="admin-section">
+                    <h4>Son Aktivite</h4>
+                    <div id="admin-activity-list">
+                        <p style="color: var(--text-secondary);">Yükleniyor...</p>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <h4>Son Eşleşmeler</h4>
+                    <div id="admin-matches-list">
+                        <p style="color: var(--text-secondary);">Yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div class="fab" id="fab" title="Hızlı İşlemler">
+            <i class="fas fa-plus"></i>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Profile Setup/Edit Modal -->
+    <div class="modal" id="profile-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Profilini Güncelle</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-name">Adınız *</label>
+                        <input type="text" id="profile-name" required placeholder="Adınızı girin">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-age">Yaş *</label>
+                        <input type="number" id="profile-age" required min="18" max="100" placeholder="Yaşınız">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-gender">Cinsiyet *</label>
+                        <select id="profile-gender" required>
+                            <option value="">Seçiniz</option>
+                            <option value="male">Erkek</option>
+                            <option value="female">Kadın</option>
+                            <option value="other">Diğer</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-location">Konum *</label>
+                        <input type="text" id="profile-location" required placeholder="Yaşadığınız şehir">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="profile-bio">Hakkınızda</label>
+                        <textarea id="profile-bio" placeholder="Kendinizden bahsedin, hobileriniz, ilgi alanlarınız..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>İlgi Alanlarınız (en az 3) *</label>
+                        <div id="profile-interests-container"></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline" id="cancel-profile">
+                            İptal
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div class="modal" id="notifications-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Bildirimler</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="notifications-header" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <button class="btn btn-outline" id="mark-all-read">
+                        <i class="fas fa-check-double"></i> Tümünü Okundu İşaretle
+                    </button>
+                    <button class="btn btn-danger" id="clear-notifications">
+                        <i class="fas fa-trash"></i> Temizle
+                    </button>
+                </div>
+                <div id="notifications-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Bildirimler yükleniyor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Notification Modal -->
+    <div class="modal" id="admin-notification-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Toplu Bildirim Gönder</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="admin-notification-form">
+                    <div class="form-group">
+                        <label for="admin-notification-title">Başlık *</label>
+                        <input type="text" id="admin-notification-title" required placeholder="Bildirim başlığı">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="admin-notification-message">Mesaj *</label>
+                        <textarea id="admin-notification-message" required placeholder="Bildirim mesajı"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="admin-notification-target">Hedef Kitle</label>
+                        <select id="admin-notification-target">
+                            <option value="all">Tüm Kullanıcılar</option>
+                            <option value="male">Sadece Erkekler</option>
+                            <option value="female">Sadece Kadınlar</option>
+                            <option value="premium">Premium Kullanıcılar</option>
+                            <option value="active">Son 7 Gün Aktif Olanlar</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="admin-notification-type">Bildirim Türü</label>
+                        <select id="admin-notification-type">
+                            <option value="info">Bilgi</option>
+                            <option value="warning">Uyarı</option>
+                            <option value="success">Başarı</option>
+                            <option value="error">Hata</option>
+                        </select>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline" id="cancel-admin-notification">
+                            İptal
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Gönder
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Detail Page (Hidden by default) -->
+    <div id="profile-detail-page" style="display: none;">
+        <div class="profile-detail">
+            <button class="btn btn-outline back-button" id="back-to-main">
+                <i class="fas fa-arrow-left"></i> Geri Dön
+            </button>
+            
+            <div class="profile-header-detail">
+                <div class="profile-avatar-large" id="detail-avatar">
+                    <!-- Avatar will be populated -->
+                </div>
+                <div class="profile-info-detail">
+                    <h1 id="detail-name"></h1>
+                    <div class="profile-meta">
+                        <div class="profile-meta-item">
+                            <i class="fas fa-birthday-cake"></i>
+                            <span id="detail-age"></span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="detail-location"></span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <i class="fas fa-venus-mars"></i>
+                            <span id="detail-gender"></span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="detail-last-active"></span>
+                        </div>
+                    </div>
+                    <p class="profile-bio-detail" id="detail-bio"></p>
+                    <div class="profile-actions" style="margin-top: 20px;">
+                        <button class="btn btn-primary" id="detail-like-btn">
+                            <i class="fas fa-heart"></i> Beğen
+                        </button>
+                        <button class="btn btn-outline" id="detail-message-btn">
+                            <i class="fas fa-comment"></i> Mesaj Gönder
+                        </button>
+                        <button class="btn btn-outline" id="detail-report-btn">
+                            <i class="fas fa-flag"></i> Bildir
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-sections">
+                <div>
+                    <div class="section-card">
+                        <h2><i class="fas fa-heart"></i> İlgi Alanları</h2>
+                        <div class="interest-grid" id="detail-interests">
+                            <!-- Interests will be populated -->
+                        </div>
+                    </div>
+                    
+                    <div class="section-card">
+                        <h2><i class="fas fa-images"></i> Fotoğraflar</h2>
+                        <div id="detail-photos" style="text-align: center; padding: 20px;">
+                            <p style="color: var(--text-secondary);">Fotoğraf yüklenmemiş</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="section-card">
+                        <h2><i class="fas fa-chart-line"></i> İstatistikler</h2>
+                        <div class="stats">
+                            <div class="stat-item">
+                                <span class="stat-label">Profil Görüntüleme</span>
+                                <span class="stat-value" id="detail-views">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Beğeni Sayısı</span>
+                                <span class="stat-value" id="detail-likes">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Eşleşme Sayısı</span>
+                                <span class="stat-value" id="detail-matches">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Aktiflik Oranı</span>
+                                <span class="stat-value" id="detail-activity">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-card">
+                        <h2><i class="fas fa-users"></i> Ortak Özellikler</h2>
+                        <div id="common-features">
+                            <p style="color: var(--text-secondary);">Ortak özellikler yükleniyor...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2GxbYkrKshir7CIbh80kiRp8QmrjgCzY",
+            authDomain: "hayirli-isler.firebaseapp.com",
+            projectId: "hayirli-isler",
+            storageBucket: "hayirli-isler.firebasestorage.app",
+            messagingSenderId: "832397139748",
+            appId: "1:832397139748:web:5660bff139a20bda01ddb1",
+            measurementId: "G-XMB7X0RVPY"
+        };
+
+        // Firebase'i başlat
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Global değişkenler
+        let currentUser = null;
+        let currentUserData = null;
+        let likedUsers = new Set();
+        let dislikedUsers = new Set();
+        let matches = [];
+        let messages = [];
+        let userLikes = [];
+        let allUsers = [];
+        let notifications = [];
+        let currentFilter = {
+            gender: 'all',
+            minAge: 18,
+            maxAge: 50,
+            location: '',
+            distance: 100,
+            interests: []
+        };
+        let isAdmin = false;
+        let currentView = 'discover';
+        let activeChat = null;
+        let chatUnsubscribe = null; // Real-time mesaj listener için
+        let messageListeners = new Map(); // Her chat için ayrı listener
+        const ADMIN_EMAILS = ['admin@moderntanism.com', 'admin@example.com', 'admin@admin.com'];
+        const INTERESTS = [
+            'Müzik', 'Spor', 'Seyahat', 'Kitap', 'Sinema', 'Teknoloji', 'Sanat', 'Yemek',
+            'Dans', 'Doğa', 'Fotoğrafçılık', 'Yazılım', 'Moda', 'Tarih', 'Bilim', 'Oyun',
+            'Yoga', 'Tiyatro', 'Astroloji', 'Hayvanlar', 'Bahçecilik', 'Koleksiyon'
+        ];
+
+        // Yardımcı fonksiyonlar
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function formatTimeAgo(date) {
+            if (!date) return '';
+            
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Şimdi';
+            if (minutes < 60) return `${minutes} dakika önce`;
+            if (hours < 24) return `${hours} saat önce`;
+            if (days < 7) return `${days} gün önce`;
+            return date.toLocaleDateString('tr-TR');
+        }
+
+        function isUserOnline(lastActive) {
+            if (!lastActive) return false;
+            const lastActiveDate = lastActive.toDate ? lastActive.toDate() : new Date(lastActive);
+            const now = new Date();
+            return (now - lastActiveDate) < 5 * 60 * 1000;
+        }
+
+        function getGenderEmoji(gender) {
+            switch(gender) {
+                case 'male': return '👨';
+                case 'female': return '👩';
+                default: return '👤';
+            }
+        }
+
+        function getGenderText(gender) {
+            switch(gender) {
+                case 'male': return 'Erkek';
+                case 'female': return 'Kadın';
+                default: return 'Diğer';
+            }
+        }
+
+        function formatLastActive(date) {
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            
+            if (minutes < 1) return 'Şimdi';
+            if (minutes < 60) return `${minutes} dakika önce`;
+            if (hours < 24) return `${hours} saat önce`;
+            if (days < 7) return `${days} gün önce`;
+            return date.toLocaleDateString('tr-TR');
+        }
+
+        // Gerçek zamanlı mesaj formatı
+        function formatMessageTime(date) {
+            if (!date) return '';
+            
+            const now = new Date();
+            const messageDate = date.toDate ? date.toDate() : new Date(date);
+            
+            const diff = now - messageDate;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            
+            if (minutes < 1) return 'Şimdi';
+            if (minutes < 60) return `${minutes}d`;
+            if (hours < 24) return `${hours}s`;
+            
+            return messageDate.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // Sayfa yüklendiğinde çalışacak kod
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+
+        // Uygulamayı başlat
+        async function initApp() {
+            console.log('Modern Tanışma Uygulaması başlatılıyor...');
+            
+            // Element referanslarını al
+            const elements = {
+                // Header elements
+                userAvatar: document.getElementById('user-avatar'),
+                userName: document.getElementById('user-name'),
+                userLocation: document.getElementById('location-text'),
+                
+                // Buttons
+                logoutBtn: document.getElementById('logout-btn'),
+                editProfileBtn: document.getElementById('edit-profile-btn'),
+                notificationBtn: document.getElementById('notification-btn'),
+                searchProfilesBtn: document.getElementById('search-profiles-btn'),
+                refreshBtn: document.getElementById('refresh-profiles'),
+                fab: document.getElementById('fab'),
+                themeToggle: document.getElementById('theme-toggle'),
+                
+                // Navigation
+                discoverTab: document.getElementById('discover-tab'),
+                matchesTab: document.getElementById('matches-tab'),
+                messagesTab: document.getElementById('messages-tab'),
+                likesTab: document.getElementById('likes-tab'),
+                adminTab: document.getElementById('admin-tab'),
+                
+                // Badges
+                matchesBadge: document.getElementById('matches-badge'),
+                messagesBadge: document.getElementById('messages-badge'),
+                likesBadge: document.getElementById('likes-badge'),
+                
+                // Main content
+                mainFeed: document.getElementById('main-feed'),
+                adminPanel: document.getElementById('admin-panel'),
+                feedTitle: document.getElementById('feed-title'),
+                feedContent: document.getElementById('feed-content'),
+                profilesContainer: document.getElementById('profiles-container'),
+                
+                // Profile detail page
+                profileDetailPage: document.getElementById('profile-detail-page'),
+                backToMain: document.getElementById('back-to-main'),
+                
+                // Modals
+                profileModal: document.getElementById('profile-modal'),
+                notificationsModal: document.getElementById('notifications-modal'),
+                adminNotificationModal: document.getElementById('admin-notification-modal'),
+                
+                // Forms
+                profileForm: document.getElementById('profile-form'),
+                adminNotificationForm: document.getElementById('admin-notification-form'),
+                
+                // Filter elements
+                genderFilter: document.getElementById('gender-filter'),
+                ageRange: document.getElementById('age-range'),
+                minAgeValue: document.getElementById('min-age-value'),
+                maxAgeValue: document.getElementById('max-age-value'),
+                locationFilter: document.getElementById('location-filter'),
+                distanceFilter: document.getElementById('distance-filter'),
+                distanceValue: document.getElementById('distance-value'),
+                interestsFilterContainer: document.getElementById('interests-filter-container'),
+                applyFilters: document.getElementById('apply-filters'),
+                resetFilters: document.getElementById('reset-filters'),
+                
+                // Stats
+                likesSent: document.getElementById('likes-sent'),
+                totalMatches: document.getElementById('total-matches'),
+                profileViews: document.getElementById('profile-views'),
+                popularityScore: document.getElementById('popularity-score')
+            };
+
+            // Toast fonksiyonu
+            function showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = 'toast';
+                
+                switch(type) {
+                    case 'error':
+                        toast.classList.add('error');
+                        break;
+                    case 'warning':
+                        toast.classList.add('warning');
+                        break;
+                    case 'info':
+                        toast.classList.add('info');
+                        break;
+                    default:
+                        toast.classList.add('success');
+                }
+                
+                toast.style.display = 'block';
+                
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 3000);
+            }
+
+            // Modal fonksiyonları
+            function showModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            function hideModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+
+            // Tema değiştirme
+            elements.themeToggle.addEventListener('change', function() {
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('theme', this.checked ? 'dark' : 'light');
+            });
+
+            // Karanlık tema kontrolü
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                elements.themeToggle.checked = true;
+            }
+
+            // İlgi alanlarını render et
+            function renderInterests(containerId, selectedInterests = []) {
+                const container = document.getElementById(containerId);
+                if (!container) return;
+                
+                container.innerHTML = '';
+                INTERESTS.forEach(interest => {
+                    const label = document.createElement('label');
+                    label.className = 'interest-label';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.className = 'interest-checkbox';
+                    checkbox.value = interest;
+                    checkbox.checked = selectedInterests.includes(interest);
+                    
+                    const span = document.createElement('span');
+                    span.textContent = interest;
+                    
+                    label.appendChild(checkbox);
+                    label.appendChild(span);
+                    container.appendChild(label);
+                });
+            }
+
+            // Kullanıcı durumunu kontrol et
+            auth.onAuthStateChanged(async (user) => {
+                if (!user) {
+                    showToast('Lütfen giriş yapın', 'error');
+                    setTimeout(() => window.location.href = 'index.html', 1500);
+                    return;
+                }
+                
+                currentUser = user;
+                console.log('Kullanıcı oturumu açık:', user.email);
+                
+                // Admin kontrolü
+                isAdmin = ADMIN_EMAILS.includes(user.email.toLowerCase());
+                if (isAdmin) {
+                    elements.adminTab.style.display = 'flex';
+                }
+                
+                try {
+                    // Kullanıcı verisini al
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    
+                    if (userDoc.exists) {
+                        currentUserData = userDoc.data();
+                        console.log('Kullanıcı verisi alındı:', currentUserData);
+                        
+                        // UI'yı güncelle
+                        updateUserUI();
+                        
+                        // Tercihleri yükle
+                        await loadUserPreferences();
+                        
+                        // Tüm kullanıcıları yükle
+                        await loadAllUsers();
+                        
+                        // Mesajları ve beğenileri yükle
+                        await loadMessages();
+                        await loadUserLikes();
+                        
+                        // Profilleri yükle
+                        loadProfiles();
+                        
+                        // Periyodik kontrolleri başlat
+                        startPeriodicChecks();
+                        
+                        // Real-time mesaj dinleyicilerini başlat
+                        startMessageListeners();
+                        
+                        showToast(`Hoş geldiniz, ${currentUserData.name}!`, 'success');
+                    } else {
+                        // Yeni kullanıcı oluştur
+                        await createNewUser(user);
+                    }
+                    
+                } catch (error) {
+                    console.error('Kullanıcı verisi yüklenirken hata:', error);
+                    showToast('Bir hata oluştu', 'error');
+                }
+            });
+
+            // Yeni kullanıcı oluştur
+            async function createNewUser(user) {
+                const nameFromEmail = user.email.split('@')[0];
+                
+                currentUserData = {
+                    uid: user.uid,
+                    email: user.email,
+                    name: nameFromEmail,
+                    age: 25,
+                    gender: 'other',
+                    location: '',
+                    bio: '',
+                    interests: [],
+                    likedUsers: [],
+                    dislikedUsers: [],
+                    matches: [],
+                    profileViews: 0,
+                    popularity: 0,
+                    lastActive: firebase.firestore.FieldValue.serverTimestamp(),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    isAdmin: isAdmin,
+                    isPremium: false,
+                    photos: [],
+                    profileCompleted: false
+                };
+                
+                await db.collection('users').doc(user.uid).set(currentUserData);
+                
+                updateUserUI();
+                renderInterests('profile-interests-container');
+                showModal('profile-modal');
+                showToast('Profilinizi tamamlayın', 'info');
+            }
+
+            // Kullanıcı UI'ını güncelle
+            function updateUserUI() {
+                if (!currentUserData) return;
+                
+                elements.userName.textContent = currentUserData.name || 'Kullanıcı';
+                elements.userLocation.textContent = currentUserData.location || 'Konum belirtilmemiş';
+                
+                // Avatar
+                const initial = (currentUserData.name || '?').charAt(0).toUpperCase();
+                elements.userAvatar.innerHTML = initial;
+                elements.userAvatar.classList.add('online');
+            }
+
+            // Profil formu gönderimi
+            elements.profileForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('profile-name').value.trim();
+                const age = parseInt(document.getElementById('profile-age').value);
+                const gender = document.getElementById('profile-gender').value;
+                const location = document.getElementById('profile-location').value.trim();
+                const bio = document.getElementById('profile-bio').value.trim();
+                
+                // Seçili ilgi alanlarını al
+                const interestCheckboxes = document.querySelectorAll('#profile-interests-container .interest-checkbox:checked');
+                const interests = Array.from(interestCheckboxes).map(cb => cb.value);
+                
+                // Validasyon
+                if (!name || !age || !gender || !location) {
+                    showToast('Lütfen tüm zorunlu alanları doldurun', 'error');
+                    return;
+                }
+                
+                if (interests.length < 3) {
+                    showToast('En az 3 ilgi alanı seçmelisiniz', 'error');
+                    return;
+                }
+                
+                try {
+                    // Kullanıcıyı güncelle
+                    await db.collection('users').doc(currentUser.uid).update({
+                        name: name,
+                        age: age,
+                        gender: gender,
+                        location: location,
+                        bio: bio,
+                        interests: interests,
+                        profileCompleted: true,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastActive: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Local veriyi güncelle
+                    Object.assign(currentUserData, {
+                        name, age, gender, location, bio, interests, profileCompleted: true
+                    });
+                    
+                    updateUserUI();
+                    hideModal('profile-modal');
+                    showToast('Profil başarıyla güncellendi!', 'success');
+                    
+                    // Profilleri yeniden yükle
+                    loadProfiles();
+                    
+                } catch (error) {
+                    console.error('Profil güncellenirken hata:', error);
+                    showToast('Güncelleme başarısız', 'error');
+                }
+            });
+
+            // Profil düzenleme butonu
+            elements.editProfileBtn.addEventListener('click', function() {
+                showProfileEditPage();
+            });
+
+            // Çıkış yap
+            elements.logoutBtn.addEventListener('click', async function() {
+                if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+                    try {
+                        // Tüm mesaj dinleyicilerini durdur
+                        stopAllMessageListeners();
+                        
+                        await auth.signOut();
+                        showToast('Çıkış yapıldı', 'info');
+                        setTimeout(() => window.location.href = 'index.html', 1000);
+                    } catch (error) {
+                        showToast('Çıkış başarısız', 'error');
+                    }
+                }
+            });
+
+            // Bildirimler butonu
+            elements.notificationBtn.addEventListener('click', function() {
+                showNotificationsModal();
+            });
+
+            // Arama butonu
+            elements.searchProfilesBtn.addEventListener('click', function() {
+                showSearchModal();
+            });
+
+            // Profilleri yükle
+            async function loadProfiles() {
+                elements.profilesContainer.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Profiller yükleniyor...</p>
+                    </div>
+                `;
+                
+                try {
+                    const usersSnapshot = await db.collection('users').get();
+                    const currentUserId = currentUser?.uid;
+                    
+                    let profiles = [];
+                    
+                    usersSnapshot.forEach(doc => {
+                        const userData = doc.data();
+                        
+                        // Filtreleme
+                        if (userData.uid === currentUserId) return;
+                        if (!userData.profileCompleted) return;
+                        if (likedUsers.has(userData.uid) || dislikedUsers.has(userData.uid)) return;
+                        
+                        // Gender filter
+                        if (currentFilter.gender !== 'all' && userData.gender !== currentFilter.gender) return;
+                        
+                        // Age filter
+                        if (userData.age < 18 || userData.age > currentFilter.maxAge) return;
+                        
+                        profiles.push({
+                            id: userData.uid,
+                            ...userData
+                        });
+                    });
+                    
+                    renderProfiles(profiles);
+                    
+                } catch (error) {
+                    console.error('Profiller yüklenirken hata:', error);
+                    showToast('Profiller yüklenemedi', 'error');
+                }
+            }
+
+            // Profilleri render et - GELİŞTİRİLMİŞ
+            function renderProfiles(profiles) {
+                elements.profilesContainer.innerHTML = '';
+                
+                if (profiles.length === 0) {
+                    elements.profilesContainer.innerHTML = `
+                        <div class="empty-state" style="width: 100%;">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-user-slash"></i>
+                            </div>
+                            <h3 style="margin-bottom: 10px;">Profil Bulunamadı</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                                Filtrelerinizi genişletmeyi deneyin veya daha sonra tekrar kontrol edin.
+                            </p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                profiles.forEach(profile => {
+                    const profileCard = document.createElement('div');
+                    profileCard.className = 'profile-card fade-in';
+                    
+                    const initial = profile.name ? profile.name.charAt(0).toUpperCase() : '?';
+                    const isOnline = isUserOnline(profile.lastActive);
+                    
+                    profileCard.innerHTML = `
+                        <div class="profile-image">
+                            ${initial}
+                            ${isOnline ? '<div class="online-badge pulse"></div>' : ''}
+                        </div>
+                        <div class="profile-content">
+                            <div class="profile-header">
+                                <div>
+                                    <div class="profile-name">${profile.name}</div>
+                                    <div class="profile-age">${profile.age} yaş • ${getGenderEmoji(profile.gender)}</div>
+                                </div>
+                            </div>
+                            <div class="profile-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${profile.location || 'Konum belirtilmemiş'}</span>
+                            </div>
+                            <div class="profile-bio">${profile.bio || 'Henüz bir açıklama eklenmemiş.'}</div>
+                            <div class="profile-tags">
+                                ${(profile.interests || []).slice(0, 3).map(interest => 
+                                    `<span class="tag">${interest}</span>`
+                                ).join('')}
+                            </div>
+                            <div class="profile-actions">
+                                <button class="action-btn dislike-btn" data-id="${profile.id}">
+                                    <i class="fas fa-times"></i> Pas
+                                </button>
+                                <button class="action-btn like-btn" data-id="${profile.id}">
+                                    <i class="fas fa-heart"></i> Beğen
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Event listener'lar ekle
+                    const likeBtn = profileCard.querySelector('.like-btn');
+                    const dislikeBtn = profileCard.querySelector('.dislike-btn');
+                    
+                    likeBtn.addEventListener('click', function() {
+                        handleLike(profile.id, profile.name);
+                    });
+                    
+                    dislikeBtn.addEventListener('click', function() {
+                        handleDislike(profile.id, profile.name);
+                    });
+                    
+                    // Profil detayına tıklama
+                    profileCard.addEventListener('click', function(e) {
+                        if (!e.target.closest('.profile-actions')) {
+                            showProfileDetail(profile);
+                        }
+                    });
+                    
+                    elements.profilesContainer.appendChild(profileCard);
+                });
+            }
+
+            // Profil detayını göster
+            async function showProfileDetail(profile) {
+                // Ana sayfayı gizle
+                document.getElementById('app-container').style.display = 'none';
+                document.getElementById('profile-detail-page').style.display = 'block';
+                
+                // Profil bilgilerini doldur
+                document.getElementById('detail-name').textContent = profile.name;
+                document.getElementById('detail-age').textContent = `${profile.age} yaş`;
+                document.getElementById('detail-location').textContent = profile.location || 'Belirtilmemiş';
+                document.getElementById('detail-gender').textContent = getGenderText(profile.gender);
+                document.getElementById('detail-bio').textContent = profile.bio || 'Açıklama eklenmemiş';
+                document.getElementById('detail-avatar').textContent = profile.name.charAt(0).toUpperCase();
+                document.getElementById('detail-views').textContent = profile.profileViews || 0;
+                
+                // İlgi alanlarını göster
+                const interestsContainer = document.getElementById('detail-interests');
+                interestsContainer.innerHTML = '';
+                (profile.interests || []).forEach(interest => {
+                    const interestItem = document.createElement('div');
+                    interestItem.className = 'interest-item';
+                    interestItem.textContent = interest;
+                    interestsContainer.appendChild(interestItem);
+                });
+                
+                // Son aktiflik zamanı
+                const lastActive = profile.lastActive?.toDate?.() || new Date();
+                document.getElementById('detail-last-active').textContent = formatLastActive(lastActive);
+                
+                // Event listener'lar ekle
+                document.getElementById('detail-like-btn').onclick = () => handleLike(profile.id, profile.name);
+                document.getElementById('detail-message-btn').onclick = () => {
+                    // Mesaj göndermek için önce eşleşme kontrolü
+                    checkAndCreateChat(profile.id, profile.name);
+                };
+                document.getElementById('detail-report-btn').onclick = () => showReportModal(profile.id, profile.name);
+            }
+
+            // Ana sayfaya dön
+            elements.backToMain.addEventListener('click', function() {
+                document.getElementById('profile-detail-page').style.display = 'none';
+                document.getElementById('app-container').style.display = 'block';
+                if (currentView === 'discover') {
+                    loadProfiles();
+                }
+            });
+
+            // Beğeni işlemi
+            async function handleLike(profileId, profileName) {
+                try {
+                    likedUsers.add(profileId);
+                    
+                    // Firestore'da güncelle
+                    await db.collection('users').doc(currentUser.uid).update({
+                        likedUsers: Array.from(likedUsers),
+                        lastActive: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Beğeni bildirimi gönder
+                    await db.collection('likes').add({
+                        fromUserId: currentUser.uid,
+                        fromUserName: currentUserData.name,
+                        toUserId: profileId,
+                        type: 'like',
+                        seen: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Profili kaldır
+                    removeProfileCard(profileId);
+                    
+                    // İstatistikleri güncelle
+                    updateStats();
+                    
+                    showToast(`${profileName} beğenildi!`, 'success');
+                    
+                    // Karşılıklı beğeni kontrolü
+                    await checkForMutualLike(profileId, profileName);
+                    
+                } catch (error) {
+                    console.error('Beğeni işlenirken hata:', error);
+                    showToast('Bir hata oluştu', 'error');
+                }
+            }
+
+            // Pas işlemi
+            async function handleDislike(profileId, profileName) {
+                try {
+                    dislikedUsers.add(profileId);
+                    
+                    await db.collection('users').doc(currentUser.uid).update({
+                        dislikedUsers: Array.from(dislikedUsers),
+                        lastActive: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    removeProfileCard(profileId);
+                    showToast(`${profileName} pas verildi`, 'info');
+                    
+                } catch (error) {
+                    console.error('Pas işlenirken hata:', error);
+                }
+            }
+
+            // Profil kartını kaldır
+            function removeProfileCard(profileId) {
+                const card = document.querySelector(`[data-id="${profileId}"]`)?.closest('.profile-card');
+                if (card) {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        card.remove();
+                        
+                        // Kalan kart sayısını kontrol et
+                        const remaining = document.querySelectorAll('.profile-card').length;
+                        if (remaining === 0) {
+                            loadProfiles();
+                        }
+                    }, 300);
+                }
+            }
+
+            // Karşılıklı beğeni kontrolü
+            async function checkForMutualLike(profileId, profileName) {
+                try {
+                    const otherUserDoc = await db.collection('users').doc(profileId).get();
+                    if (!otherUserDoc.exists) return;
+                    
+                    const otherUserData = otherUserDoc.data();
+                    const otherUserLikes = new Set(otherUserData.likedUsers || []);
+                    
+                    if (otherUserLikes.has(currentUser.uid)) {
+                        // Eşleşme oluştur
+                        await createMatch(profileId, profileName, otherUserData);
+                        showToast(`🎉 ${profileName} ile eşleştiniz!`, 'success');
+                    }
+                    
+                } catch (error) {
+                    console.error('Karşılıklı beğeni kontrolü sırasında hata:', error);
+                }
+            }
+
+            // Eşleşme oluştur
+            async function createMatch(profileId, profileName, otherUserData) {
+                try {
+                    const matchId = [currentUser.uid, profileId].sort().join('_');
+                    
+                    await db.collection('matches').doc(matchId).set({
+                        users: [currentUser.uid, profileId],
+                        usersData: {
+                            [currentUser.uid]: {
+                                name: currentUserData.name,
+                                avatar: currentUserData.name?.charAt(0) || '?'
+                            },
+                            [profileId]: {
+                                name: profileName,
+                                avatar: profileName?.charAt(0) || '?'
+                            }
+                        },
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastActivity: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Eşleşme bildirimi gönder
+                    await db.collection('notifications').add({
+                        fromUserId: 'system',
+                        fromUserName: 'Sistem',
+                        toUserId: profileId,
+                        type: 'match',
+                        title: '🎉 Eşleşme!',
+                        message: `${currentUserData.name} ile eşleştiniz!`,
+                        seen: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        isMatch: true
+                    });
+                    
+                    // Eşleşme sayısını güncelle
+                    await updateMatchesCount();
+                    
+                    // Chat oluştur
+                    await createChat(profileId, profileName);
+                    
+                } catch (error) {
+                    console.error('Eşleşme oluşturulurken hata:', error);
+                }
+            }
+
+            // Chat oluştur - GELİŞTİRİLMİŞ
+            async function createChat(profileId, profileName) {
+                try {
+                    const chatId = [currentUser.uid, profileId].sort().join('_');
+                    
+                    await db.collection('chats').doc(chatId).set({
+                        participants: [currentUser.uid, profileId],
+                        participantNames: {
+                            [currentUser.uid]: currentUserData.name,
+                            [profileId]: profileName
+                        },
+                        lastMessage: '',
+                        lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        unreadCount: {
+                            [currentUser.uid]: 0,
+                            [profileId]: 0
+                        },
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastSeen: {
+                            [currentUser.uid]: firebase.firestore.FieldValue.serverTimestamp(),
+                            [profileId]: null
+                        }
+                    });
+                    
+                    // Mesajları yenile
+                    await loadMessages();
+                    
+                    // Real-time listener başlat
+                    startChatListener(chatId);
+                    
+                } catch (error) {
+                    console.error('Chat oluşturulurken hata:', error);
+                }
+            }
+
+            // Chat oluşturma kontrolü
+            async function checkAndCreateChat(profileId, profileName) {
+                try {
+                    // Önce eşleşme kontrolü
+                    const matchId = [currentUser.uid, profileId].sort().join('_');
+                    const matchDoc = await db.collection('matches').doc(matchId).get();
+                    
+                    if (matchDoc.exists) {
+                        // Eşleşme varsa mesaj gönder
+                        openChat(matchId, { id: profileId, name: profileName, avatar: profileName?.charAt(0) || '?' });
+                    } else {
+                        showToast('Önce eşleşmeniz gerekiyor', 'warning');
+                    }
+                    
+                } catch (error) {
+                    console.error('Chat kontrolü sırasında hata:', error);
+                }
+            }
+
+            // Eşleşmeleri yükle
+            async function loadMatches() {
+                try {
+                    const matchesSnapshot = await db.collection('matches')
+                        .where('users', 'array-contains', currentUser.uid)
+                        .get();
+                    
+                    matches = [];
+                    matchesSnapshot.forEach(doc => {
+                        matches.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    // Badge'i güncelle
+                    elements.matchesBadge.textContent = matches.length;
+                    elements.matchesBadge.style.display = matches.length > 0 ? 'block' : 'none';
+                    
+                } catch (error) {
+                    console.error('Eşleşmeler yüklenirken hata:', error);
+                }
+            }
+
+            // Tüm kullanıcıları yükle
+            async function loadAllUsers() {
+                try {
+                    const snapshot = await db.collection('users').get();
+                    allUsers = [];
+                    snapshot.forEach(doc => {
+                        if (doc.id !== currentUser.uid) {
+                            allUsers.push({ id: doc.id, ...doc.data() });
+                        }
+                    });
+                } catch (error) {
+                    console.error('Kullanıcılar yüklenirken hata:', error);
+                }
+            }
+
+            // Mesajları yükle - GELİŞTİRİLMİŞ
+            async function loadMessages() {
+                try {
+                    const chatsSnapshot = await db.collection('chats')
+                        .where('participants', 'array-contains', currentUser.uid)
+                        .orderBy('lastMessageAt', 'desc')
+                        .get();
+
+                    messages = [];
+                    for (const doc of chatsSnapshot.docs) {
+                        const chat = doc.data();
+                        const otherUserId = chat.participants.find(id => id !== currentUser.uid);
+                        const userDoc = await db.collection('users').doc(otherUserId).get();
+                        
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            messages.push({
+                                id: doc.id,
+                                ...chat,
+                                otherUser: {
+                                    id: otherUserId,
+                                    name: userData.name,
+                                    avatar: userData.name?.charAt(0) || '?',
+                                    lastActive: userData.lastActive
+                                }
+                            });
+                        }
+                    }
+                    
+                    // Badge'i güncelle
+                    updateMessagesBadge();
+                    
+                    // Eğer mesajlar sayfasındaysak, listeyi güncelle
+                    if (currentView === 'messages') {
+                        renderMessagesList();
+                    }
+                    
+                } catch (error) {
+                    console.error('Mesajlar yüklenirken hata:', error);
+                }
+            }
+
+            // Beğenileri yükle
+            async function loadUserLikes() {
+                try {
+                    const snapshot = await db.collection('likes')
+                        .where('toUserId', '==', currentUser.uid)
+                        .where('seen', '==', false)
+                        .orderBy('createdAt', 'desc')
+                        .get();
+                    
+                    userLikes = [];
+                    for (const doc of snapshot.docs) {
+                        const like = doc.data();
+                        const userDoc = await db.collection('users').doc(like.fromUserId).get();
+                        
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            userLikes.push({
+                                id: doc.id,
+                                ...like,
+                                user: {
+                                    id: like.fromUserId,
+                                    name: userData.name,
+                                    age: userData.age,
+                                    location: userData.location,
+                                    avatar: userData.name?.charAt(0) || '?'
+                                }
+                            });
+                        }
+                    }
+                    
+                    // Badge'i güncelle
+                    updateLikesBadge();
+                    
+                } catch (error) {
+                    console.error('Beğeniler yüklenirken hata:', error);
+                }
+            }
+
+            // Bildirim modalını göster
+            async function showNotificationsModal() {
+                try {
+                    const notificationsSnapshot = await db.collection('notifications')
+                        .where('toUserId', '==', currentUser.uid)
+                        .orderBy('createdAt', 'desc')
+                        .limit(50)
+                        .get();
+                    
+                    const notificationsList = document.getElementById('notifications-list');
+                    notificationsList.innerHTML = '';
+                    
+                    if (notificationsSnapshot.empty) {
+                        notificationsList.innerHTML = `
+                            <div class="empty-state" style="padding: 40px 20px;">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-bell-slash"></i>
+                                </div>
+                                <h3 style="margin-bottom: 10px;">Bildirim Yok</h3>
+                                <p style="color: var(--text-secondary);">Henüz bildiriminiz bulunmuyor.</p>
+                            </div>
+                        `;
+                    } else {
+                        notificationsSnapshot.forEach(doc => {
+                            const notif = doc.data();
+                            const notifElement = document.createElement('div');
+                            notifElement.className = `notification-item ${notif.seen ? '' : 'unread'}`;
+                            notifElement.innerHTML = `
+                                <div style="padding: 16px; border-bottom: 1px solid var(--border-color);">
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                        <div style="width: 40px; height: 40px; background: ${notif.type === 'match' ? 'var(--primary-gradient)' : 'var(--secondary-gradient)'}; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                                            ${notif.fromUserName?.charAt(0) || 'S'}
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div style="font-weight: 700; color: var(--text-primary);">
+                                                ${notif.title}
+                                                ${!notif.seen ? '<span style="margin-left: 8px; font-size: 10px; background: var(--primary-color); color: white; padding: 2px 6px; border-radius: 10px;">YENİ</span>' : ''}
+                                            </div>
+                                            <div style="color: var(--text-secondary); font-size: 14px;">${notif.message}</div>
+                                        </div>
+                                    </div>
+                                    <div style="font-size: 12px; color: var(--text-light); text-align: right;">
+                                        ${notif.createdAt?.toDate?.().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) || ''}
+                                    </div>
+                                </div>
+                            `;
+                            notificationsList.appendChild(notifElement);
+                        });
+                    }
+                    
+                    showModal('notifications-modal');
+                    
+                } catch (error) {
+                    console.error('Bildirimler yüklenirken hata:', error);
+                    showToast('Bildirimler yüklenemedi', 'error');
+                }
+            }
+
+            // Kullanıcı tercihlerini yükle
+            async function loadUserPreferences() {
+                try {
+                    const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                    if (userDoc.exists) {
+                        const data = userDoc.data();
+                        likedUsers = new Set(data.likedUsers || []);
+                        dislikedUsers = new Set(data.dislikedUsers || []);
+                    }
+                } catch (error) {
+                    console.error('Tercihler yüklenirken hata:', error);
+                }
+            }
+
+            // İstatistikleri güncelle
+            async function updateStats() {
+                try {
+                    const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                    if (userDoc.exists) {
+                        const data = userDoc.data();
+                        
+                        elements.likesSent.textContent = data.likedUsers?.length || 0;
+                        elements.totalMatches.textContent = data.matches?.length || 0;
+                        elements.profileViews.textContent = data.profileViews || 0;
+                        elements.popularityScore.textContent = `${data.popularity || 0}%`;
+                    }
+                } catch (error) {
+                    console.error('İstatistikler güncellenirken hata:', error);
+                }
+            }
+
+            // Periyodik kontrolleri başlat
+            function startPeriodicChecks() {
+                // Her 30 saniyede bir kontrol
+                setInterval(async () => {
+                    if (currentUser) {
+                        await loadMessages();
+                        await loadUserLikes();
+                        await loadMatches();
+                        updateStats();
+                    }
+                }, 30000);
+            }
+
+            // Mesajlar badge'ini güncelle
+            function updateMessagesBadge() {
+                const unreadCount = messages.reduce((count, chat) => {
+                    return count + (chat.unreadCount?.[currentUser.uid] || 0);
+                }, 0);
+                
+                if (unreadCount > 0) {
+                    elements.messagesBadge.textContent = unreadCount;
+                    elements.messagesBadge.style.display = 'block';
+                } else {
+                    elements.messagesBadge.style.display = 'none';
+                }
+            }
+
+            // Beğeniler badge'ini güncelle
+            function updateLikesBadge() {
+                if (userLikes.length > 0) {
+                    elements.likesBadge.textContent = userLikes.length;
+                    elements.likesBadge.style.display = 'block';
+                } else {
+                    elements.likesBadge.style.display = 'none';
+                }
+            }
+
+            // Filtreleri uygula
+            elements.applyFilters.addEventListener('click', function() {
+                currentFilter.gender = elements.genderFilter.value;
+                currentFilter.maxAge = parseInt(elements.ageRange.value);
+                currentFilter.location = elements.locationFilter.value.trim();
+                currentFilter.distance = parseInt(elements.distanceFilter.value);
+                
+                // Seçili ilgi alanlarını al
+                const selectedInterests = [];
+                document.querySelectorAll('#interests-filter-container .interest-checkbox:checked').forEach(cb => {
+                    selectedInterests.push(cb.value);
+                });
+                currentFilter.interests = selectedInterests;
+                
+                loadProfiles();
+                showToast('Filtreler uygulandı', 'success');
+            });
+
+            // Filtreleri sıfırla
+            elements.resetFilters.addEventListener('click', function() {
+                elements.genderFilter.value = 'all';
+                elements.ageRange.value = 50;
+                elements.minAgeValue.textContent = '18';
+                elements.maxAgeValue.textContent = '50';
+                elements.locationFilter.value = '';
+                elements.distanceFilter.value = 100;
+                elements.distanceValue.textContent = '100 km';
+                
+                // Tüm ilgi alanlarını temizle
+                document.querySelectorAll('#interests-filter-container .interest-checkbox').forEach(cb => {
+                    cb.checked = false;
+                });
+                
+                currentFilter = {
+                    gender: 'all',
+                    minAge: 18,
+                    maxAge: 50,
+                    location: '',
+                    distance: 100,
+                    interests: []
+                };
+                
+                loadProfiles();
+                showToast('Filtreler sıfırlandı', 'info');
+            });
+
+            // Range slider'ları güncelle
+            elements.ageRange.addEventListener('input', function() {
+                elements.maxAgeValue.textContent = this.value;
+            });
+
+            elements.distanceFilter.addEventListener('input', function() {
+                elements.distanceValue.textContent = `${this.value} km`;
+            });
+
+            // İlgi alanlarını render et
+            renderInterests('interests-filter-container');
+
+            // Sekme değiştirme
+            elements.discoverTab.addEventListener('click', function(e) {
+                e.preventDefault();
+                setActiveTab('discover');
+                loadProfiles();
+            });
+
+            elements.matchesTab.addEventListener('click', async function(e) {
+                e.preventDefault();
+                setActiveTab('matches');
+                await showMatches();
+            });
+
+            elements.messagesTab.addEventListener('click', function(e) {
+                e.preventDefault();
+                setActiveTab('messages');
+                showMessages();
+            });
+
+            elements.likesTab.addEventListener('click', function(e) {
+                e.preventDefault();
+                setActiveTab('likes');
+                showUserLikes();
+            });
+
+            // Admin paneli
+            if (isAdmin) {
+                elements.adminTab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setActiveTab('admin');
+                    showAdminPanel();
+                });
+
+                // Admin bildirim gönderme
+                document.getElementById('send-admin-notification').addEventListener('click', function() {
+                    showModal('admin-notification-modal');
+                });
+
+                // Admin bildirim formu
+                elements.adminNotificationForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const title = document.getElementById('admin-notification-title').value;
+                    const message = document.getElementById('admin-notification-message').value;
+                    const target = document.getElementById('admin-notification-target').value;
+                    const type = document.getElementById('admin-notification-type').value;
+                    
+                    try {
+                        // Tüm kullanıcılara bildirim gönder
+                        const usersSnapshot = await db.collection('users').get();
+                        
+                        usersSnapshot.forEach(async (doc) => {
+                            await db.collection('notifications').add({
+                                fromUserId: 'admin',
+                                fromUserName: 'Yönetici',
+                                toUserId: doc.id,
+                                type: 'admin',
+                                title: title,
+                                message: message,
+                                seen: false,
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                isAdminNotification: true
+                            });
+                        });
+                        
+                        hideModal('admin-notification-modal');
+                        showToast('Bildirim gönderildi!', 'success');
+                        
+                    } catch (error) {
+                        console.error('Admin bildirimi gönderilirken hata:', error);
+                        showToast('Bildirim gönderilemedi', 'error');
+                    }
+                });
+            }
+
+            // Sekme aktifleştirme
+            function setActiveTab(tabName) {
+                currentView = tabName;
+                
+                // Tüm sekmeleri deaktif et
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                
+                // İlgili sekmeyi aktif et
+                switch(tabName) {
+                    case 'discover':
+                        elements.discoverTab.classList.add('active');
+                        elements.feedTitle.textContent = 'Önerilen Profiller';
+                        elements.mainFeed.style.display = 'block';
+                        elements.adminPanel.style.display = 'none';
+                        break;
+                    case 'matches':
+                        elements.matchesTab.classList.add('active');
+                        elements.feedTitle.textContent = 'Eşleşmelerim';
+                        elements.mainFeed.style.display = 'block';
+                        elements.adminPanel.style.display = 'none';
+                        break;
+                    case 'messages':
+                        elements.messagesTab.classList.add('active');
+                        elements.feedTitle.textContent = 'Mesajlar';
+                        elements.mainFeed.style.display = 'block';
+                        elements.adminPanel.style.display = 'none';
+                        break;
+                    case 'likes':
+                        elements.likesTab.classList.add('active');
+                        elements.feedTitle.textContent = 'Beğeniler';
+                        elements.mainFeed.style.display = 'block';
+                        elements.adminPanel.style.display = 'none';
+                        break;
+                    case 'admin':
+                        elements.adminTab.classList.add('active');
+                        break;
+                }
+            }
+
+            // Eşleşmeleri göster
+            async function showMatches() {
+                await loadMatches();
+                
+                let html = '';
+                
+                if (matches.length === 0) {
+                    html = `
+                        <div class="empty-state" style="width: 100%;">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <h3 style="margin-bottom: 10px;">Henüz Eşleşmeniz Yok</h3>
+                            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                                Daha fazla profil keşfedin ve beğeniler gönderin!
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    html = '<div style="display: grid; gap: 20px;">';
+                    
+                    matches.forEach(match => {
+                        const otherUserId = match.users.find(id => id !== currentUser.uid);
+                        const otherUser = match.usersData[otherUserId];
+                        
+                        html += `
+                            <div class="profile-card" style="cursor: default;">
+                                <div class="profile-content">
+                                    <div style="display: flex; align-items: center; gap: 20px;">
+                                        <div style="width: 80px; height: 80px; background: var(--secondary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; color: white; font-weight: bold;">
+                                            ${otherUser?.avatar || '?'}
+                                        </div>
+                                        <div style="flex: 1;">
+                                            <div style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">${otherUser?.name || 'Kullanıcı'}</div>
+                                            <div style="color: var(--text-secondary); margin-bottom: 16px;">${match.createdAt?.toDate?.().toLocaleDateString('tr-TR') || ''} tarihinde eşleştiniz</div>
+                                            <button class="btn btn-primary" onclick="openChat('${match.id}', ${JSON.stringify(otherUser).replace(/"/g, '&quot;')})">
+                                                <i class="fas fa-comment"></i> Mesaj Gönder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                }
+                
+                elements.feedContent.innerHTML = html;
+            }
+
+            // Mesajları göster - GELİŞTİRİLMİŞ
+            function showMessages() {
+                const feedContent = document.getElementById('feed-content');
+                feedContent.innerHTML = `
+                    <div style="display: flex; height: 600px; gap: 20px;">
+                        <div style="width: 350px; background: var(--bg-primary); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-lg);">
+                            <div style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                                <h3 style="margin-bottom: 16px; font-size: 20px;">Mesajlar</h3>
+                                <div style="position: relative;">
+                                    <input type="text" id="conversation-search" placeholder="Mesaj ara..." 
+                                           style="width: 100%; padding: 12px 40px 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-full);">
+                                    <i class="fas fa-search" style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                                </div>
+                            </div>
+                            <div id="conversations-list" style="height: 468px; overflow-y: auto;">
+                                ${messages.length === 0 ? `
+                                    <div style="padding: 40px 20px; text-align: center;">
+                                        <p style="color: var(--text-secondary);">Henüz mesajlaşma başlatmadınız.</p>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <div id="chat-area" style="flex: 1; display: flex; align-items: center; justify-content: center; background: var(--bg-primary); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+                            <div style="text-align: center; padding: 40px;">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <h3 style="margin-bottom: 10px;">Mesaj Seçin</h3>
+                                <p style="color: var(--text-secondary);">Bir konuşma seçerek mesajlaşmaya başlayın.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Konuşma listesini render et
+                if (messages.length > 0) {
+                    renderConversations();
+                }
+
+                // Arama event listener
+                document.getElementById('conversation-search').addEventListener('input', function(e) {
+                    searchConversations(e.target.value);
+                });
+            }
+
+            // Konuşmaları render et
+            function renderConversations() {
+                const container = document.getElementById('conversations-list');
+                container.innerHTML = '';
+                
+                messages.forEach(chat => {
+                    const timeAgo = formatTimeAgo(chat.lastMessageAt?.toDate());
+                    const unreadCount = chat.unreadCount?.[currentUser.uid] || 0;
+                    
+                    const item = document.createElement('div');
+                    item.className = 'conversation-item';
+                    if (activeChat?.chatId === chat.id) {
+                        item.classList.add('active');
+                    }
+                    
+                    item.innerHTML = `
+                        <div class="conversation-avatar">
+                            ${chat.otherUser.avatar}
+                        </div>
+                        <div class="conversation-info">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="conversation-name">
+                                    ${chat.otherUser.name}
+                                    ${unreadCount > 0 ? `<span class="unread-badge">${unreadCount}</span>` : ''}
+                                </div>
+                                <div class="conversation-time">${timeAgo}</div>
+                            </div>
+                            <div class="conversation-last-message">
+                                ${chat.lastMessage || 'Henüz mesaj yok'}
+                            </div>
+                        </div>
+                    `;
+                    
+                    item.addEventListener('click', () => {
+                        openChat(chat.id, chat.otherUser);
+                    });
+                    
+                    container.appendChild(item);
+                });
+            }
+
+            // Konuşmalarda ara
+            function searchConversations(searchTerm) {
+                const container = document.getElementById('conversations-list');
+                const filtered = messages.filter(conv => 
+                    conv.otherUser.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    (conv.lastMessage && conv.lastMessage.toLowerCase().includes(searchTerm.toLowerCase()))
+                );
+                
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                        <div style="padding: 40px 20px; text-align: center;">
+                            <p style="color: var(--text-secondary);">Aramanızla eşleşen konuşma bulunamadı.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = '';
+                filtered.forEach(chat => {
+                    const timeAgo = formatTimeAgo(chat.lastMessageAt?.toDate());
+                    const unreadCount = chat.unreadCount?.[currentUser.uid] || 0;
+                    
+                    const item = document.createElement('div');
+                    item.className = 'conversation-item';
+                    
+                    item.innerHTML = `
+                        <div class="conversation-avatar">
+                            ${chat.otherUser.avatar}
+                        </div>
+                        <div class="conversation-info">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="conversation-name">
+                                    ${chat.otherUser.name}
+                                    ${unreadCount > 0 ? `<span class="unread-badge">${unreadCount}</span>` : ''}
+                                </div>
+                                <div class="conversation-time">${timeAgo}</div>
+                            </div>
+                            <div class="conversation-last-message">
+                                ${chat.lastMessage || 'Henüz mesaj yok'}
+                            </div>
+                        </div>
+                    `;
+                    
+                    item.addEventListener('click', () => {
+                        openChat(chat.id, chat.otherUser);
+                    });
+                    
+                    container.appendChild(item);
+                });
+            }
+
+            // Chat aç - GELİŞTİRİLMİŞ
+            function openChat(chatId, otherUser) {
+                activeChat = { chatId, otherUser };
+                
+                document.getElementById('chat-area').innerHTML = `
+                    <div class="chat-container">
+                        <div class="chat-header">
+                            ${window.innerWidth < 768 ? `<button class="btn btn-icon" id="back-to-conversations">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>` : ''}
+                            <div class="avatar">
+                                ${otherUser.avatar}
+                            </div>
+                            <div class="user-info">
+                                <h3>${otherUser.name}</h3>
+                                <p>${isUserOnline(otherUser.lastActive) ? 'Çevrimiçi' : 'Çevrimdışı'}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="loading">
+                                <div class="spinner"></div>
+                                <p>Mesajlar yükleniyor...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input">
+                            <input type="text" id="message-input" placeholder="Mesajınızı yazın...">
+                            <button id="send-message">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Geri butonu sadece mobilde göster
+                if (window.innerWidth < 768) {
+                    document.getElementById('back-to-conversations').addEventListener('click', function() {
+                        showMessages();
+                    });
+                }
+
+                loadChatMessages(chatId);
+                setupMessageListener(chatId);
+                
+                document.getElementById('message-input').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+                
+                document.getElementById('send-message').addEventListener('click', sendMessage);
+                
+                // Okundu olarak işaretle
+                markChatAsRead(chatId);
+            }
+
+            // Chat mesajlarını yükle
+            async function loadChatMessages(chatId) {
+                try {
+                    const messagesSnapshot = await db.collection('chats').doc(chatId)
+                        .collection('messages')
+                        .orderBy('timestamp', 'asc')
+                        .limit(50)
+                        .get();
+                    
+                    const container = document.getElementById('chat-messages');
+                    container.innerHTML = '';
+                    
+                    if (messagesSnapshot.empty) {
+                        container.innerHTML = `
+                            <div style="text-align: center; padding: 40px 20px;">
+                                <p style="color: var(--text-secondary);">Henüz mesaj yok. İlk mesajı siz gönderin!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    messagesSnapshot.forEach(doc => {
+                        const msg = doc.data();
+                        displayMessage(msg);
+                    });
+                    
+                    scrollToBottom();
+                    
+                } catch (error) {
+                    console.error('Mesajlar yüklenirken hata:', error);
+                    showToast('Mesajlar yüklenemedi', 'error');
+                }
+            }
+
+            // Real-time mesaj listener kur
+            function setupMessageListener(chatId) {
+                // Önceki listener'ı durdur
+                if (messageListeners.has(chatId)) {
+                    messageListeners.get(chatId)();
+                }
+                
+                // Yeni listener başlat
+                const unsubscribe = db.collection('chats').doc(chatId)
+                    .collection('messages')
+                    .orderBy('timestamp', 'desc')
+                    .limit(1)
+                    .onSnapshot(snapshot => {
+                        snapshot.docChanges().forEach(change => {
+                            if (change.type === 'added') {
+                                const msg = change.doc.data();
+                                const container = document.getElementById('chat-messages');
+                                
+                                // Eğer bu mesajı zaten görüntülemediysek ekle
+                                const existingMessage = container.querySelector(`[data-message-id="${change.doc.id}"]`);
+                                if (!existingMessage && msg.senderId !== currentUser.uid) {
+                                    displayMessage(msg);
+                                    scrollToBottom();
+                                    
+                                    // Okundu olarak işaretle
+                                    markMessageAsRead(chatId, change.doc.id);
+                                }
+                            }
+                        });
+                    }, error => {
+                        console.error('Mesaj dinleyici hatası:', error);
+                    });
+                
+                messageListeners.set(chatId, unsubscribe);
+            }
+
+            // Tüm mesaj listener'larını durdur
+            function stopAllMessageListeners() {
+                messageListeners.forEach(unsubscribe => {
+                    unsubscribe();
+                });
+                messageListeners.clear();
+            }
+
+            // Mesaj görüntüle - GELİŞTİRİLMİŞ
+            function displayMessage(msg) {
+                const container = document.getElementById('chat-messages');
+                const isCurrentUser = msg.senderId === currentUser.uid;
+                const time = msg.timestamp?.toDate ? msg.timestamp.toDate() : new Date();
+                const timeStr = formatMessageTime(msg.timestamp);
+                
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isCurrentUser ? 'sent' : 'received'}`;
+                messageDiv.setAttribute('data-message-id', msg.id || Date.now());
+                messageDiv.innerHTML = `
+                    <div>${msg.text}</div>
+                    <div class="message-time">
+                        ${timeStr}
+                        ${isCurrentUser ? 
+                            `<span class="message-status">
+                                <i class="fas fa-check ${msg.read ? 'read-icon' : 'sent-icon'}"></i>
+                            </span>` : 
+                            ''
+                        }
+                    </div>
+                `;
+                
+                container.appendChild(messageDiv);
+            }
+
+            // Mesaj gönder - GELİŞTİRİLMİŞ
+            async function sendMessage() {
+                const input = document.getElementById('message-input');
+                const message = input.value.trim();
+                
+                if (!message || !activeChat) {
+                    return;
+                }
+                
+                try {
+                    const chatRef = db.collection('chats').doc(activeChat.chatId);
+                    const messageData = {
+                        text: message,
+                        senderId: currentUser.uid,
+                        senderName: currentUserData.name,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        read: false
+                    };
+                    
+                    // Mesajı ekle
+                    const messageRef = await chatRef.collection('messages').add(messageData);
+                    
+                    // Chat'i güncelle
+                    await chatRef.update({
+                        lastMessage: message,
+                        lastMessageAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        [`unreadCount.${activeChat.otherUser.id}`]: firebase.firestore.FieldValue.increment(1),
+                        lastSeen: {
+                            [currentUser.uid]: firebase.firestore.FieldValue.serverTimestamp()
+                        }
+                    });
+                    
+                    input.value = '';
+                    
+                    // Mesajı ekrana ekle
+                    displayMessage({
+                        ...messageData,
+                        id: messageRef.id
+                    });
+                    
+                    scrollToBottom();
+                    
+                    // Mesaj listesini güncelle
+                    await loadMessages();
+                    
+                } catch (error) {
+                    console.error('Mesaj gönderilirken hata:', error);
+                    showToast('Mesaj gönderilemedi', 'error');
+                }
+            }
+
+            // Mesajı okundu olarak işaretle
+            async function markMessageAsRead(chatId, messageId) {
+                try {
+                    await db.collection('chats').doc(chatId)
+                        .collection('messages')
+                        .doc(messageId)
+                        .update({
+                            read: true
+                        });
+                } catch (error) {
+                    console.error('Mesaj okundu olarak işaretlenirken hata:', error);
+                }
+            }
+
+            // Chat'i okundu olarak işaretle
+            async function markChatAsRead(chatId) {
+                try {
+                    await db.collection('chats').doc(chatId).update({
+                        [`unreadCount.${currentUser.uid}`]: 0,
+                        [`lastSeen.${currentUser.uid}`]: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Mesajları yenile
+                    await loadMessages();
+                    
+                } catch (error) {
+                    console.error('Chat okundu olarak işaretlenirken hata:', error);
+                }
+            }
+
+            // Scroll to bottom
+            function scrollToBottom() {
+                const container = document.getElementById('chat-messages');
+                if (container) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            }
+
+            // Real-time chat listener başlat
+            function startChatListener(chatId) {
+                if (!messageListeners.has(chatId)) {
+                    setupMessageListener(chatId);
+                }
+            }
+
+            // Tüm chat'ler için listener başlat
+            function startMessageListeners() {
+                messages.forEach(chat => {
+                    if (!messageListeners.has(chat.id)) {
+                        setupMessageListener(chat.id);
+                    }
+                });
+            }
+
+            // Mesaj listesini render et
+            function renderMessagesList() {
+                const container = document.getElementById('messages-list');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                messages.forEach(chat => {
+                    const lastMessage = chat.lastMessage || '';
+                    const unreadCount = chat.unreadCount?.[currentUser.uid] || 0;
+                    const timeAgo = formatTimeAgo(chat.lastMessageAt?.toDate());
+                    
+                    const messageElement = document.createElement('div');
+                    messageElement.className = 'message-item fade-in';
+                    messageElement.style.cssText = `
+                        padding: 20px;
+                        border-bottom: 1px solid var(--border-color);
+                        cursor: pointer;
+                        transition: var(--transition);
+                        display: flex;
+                        align-items: center;
+                        gap: 16px;
+                    `;
+                    
+                    messageElement.innerHTML = `
+                        <div style="position: relative;">
+                            <div style="width: 60px; height: 60px; background: var(--secondary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; font-weight: bold;">
+                                ${chat.otherUser.avatar}
+                            </div>
+                            ${isUserOnline(chat.otherUser.lastActive) ? 
+                                '<div style="position: absolute; bottom: 5px; right: 5px; width: 12px; height: 12px; background: var(--success-color); border-radius: 50%; border: 2px solid var(--bg-primary);"></div>' : ''}
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                                <div style="font-weight: 700; font-size: 16px; color: var(--text-primary);">
+                                    ${chat.otherUser.name}
+                                    ${unreadCount > 0 ? `<span style="margin-left: 8px; font-size: 12px; background: var(--primary-color); color: white; padding: 2px 8px; border-radius: 10px;">${unreadCount}</span>` : ''}
+                                </div>
+                                <div style="font-size: 12px; color: var(--text-light);">${timeAgo}</div>
+                            </div>
+                            <div style="color: var(--text-secondary); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                ${lastMessage || 'Henüz mesaj yok'}
+                            </div>
+                        </div>
+                    `;
+                    
+                    messageElement.addEventListener('click', () => openChat(chat.id, chat.otherUser));
+                    container.appendChild(messageElement);
+                });
+            }
+
+            // Beğenileri göster
+            function showUserLikes() {
+                const feedContent = document.getElementById('feed-content');
+                feedContent.innerHTML = `
+                    <div style="max-width: 800px; margin: 0 auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                            <h3 style="font-size: 24px; font-weight: 700;">Sizi Beğenenler</h3>
+                            <button class="btn btn-outline" id="mark-all-likes-read">
+                                <i class="fas fa-check-double"></i> Tümünü Okundu İşaretle
+                            </button>
+                        </div>
+                        
+                        <div id="likes-list" style="display: grid; gap: 20px;">
+                            ${userLikes.length === 0 ? `
+                                <div class="empty-state" style="padding: 60px 20px;">
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                    <h3 style="margin-bottom: 10px;">Henüz Beğeniniz Yok</h3>
+                                    <p style="color: var(--text-secondary);">Profilinizi daha çok kişiyle paylaşın!</p>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                // Beğeni listesini render et
+                if (userLikes.length > 0) {
+                    renderLikesList();
+                }
+
+                // Event listener
+                document.getElementById('mark-all-likes-read').addEventListener('click', markAllLikesAsRead);
+            }
+
+            // Beğeni listesini render et
+            function renderLikesList() {
+                const container = document.getElementById('likes-list');
+                container.innerHTML = '';
+                
+                userLikes.forEach(like => {
+                    const timeAgo = formatTimeAgo(like.createdAt?.toDate());
+                    
+                    const likeElement = document.createElement('div');
+                    likeElement.className = 'profile-card fade-in';
+                    likeElement.innerHTML = `
+                        <div class="profile-content">
+                            <div style="display: flex; align-items: center; gap: 20px;">
+                                <div style="position: relative;">
+                                    <div style="width: 80px; height: 80px; background: var(--secondary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; color: white; font-weight: bold;">
+                                        ${like.user.avatar}
+                                    </div>
+                                    ${!like.seen ? `
+                                        <div style="position: absolute; top: -5px; right: -5px; width: 20px; height: 20px; background: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">${like.user.name}</div>
+                                    <div style="color: var(--text-secondary); margin-bottom: 8px;">
+                                        ${like.user.age} yaş • ${like.user.location}
+                                    </div>
+                                    <div style="font-size: 14px; color: var(--text-light); margin-bottom: 16px;">
+                                        <i class="fas fa-clock"></i> ${timeAgo}
+                                    </div>
+                                    <div style="display: flex; gap: 12px;">
+                                        <button class="btn btn-primary" onclick="viewProfile('${like.user.id}')">
+                                            <i class="fas fa-eye"></i> Profili Gör
+                                        </button>
+                                        <button class="btn btn-outline" onclick="likeBack('${like.user.id}', '${like.id}')">
+                                            <i class="fas fa-heart"></i> Beğen
+                                        </button>
+                                        <button class="btn btn-outline" onclick="showToast('Daha sonra bakacağım', 'info')">
+                                            <i class="fas fa-clock"></i> Sonra
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(likeElement);
+                });
+            }
+
+            // Profil görüntüleme
+            function viewProfile(userId) {
+                const user = allUsers.find(u => u.id === userId);
+                if (user) {
+                    showProfileDetail(user);
+                }
+            }
+
+            // Karşı beğeni
+            async function likeBack(userId, likeId) {
+                try {
+                    // Karşı beğeni gönder
+                    await handleLike(userId, 'Kullanıcı');
+                    
+                    // Beğeniyi okundu olarak işaretle
+                    await db.collection('likes').doc(likeId).update({
+                        seen: true
+                    });
+                    
+                    // Listeyi yenile
+                    await loadUserLikes();
+                    showUserLikes();
+                    
+                } catch (error) {
+                    console.error('Karşı beğeni gönderilirken hata:', error);
+                }
+            }
+
+            // Tüm beğenileri okundu işaretle
+            async function markAllLikesAsRead() {
+                try {
+                    const batch = db.batch();
+                    
+                    userLikes.forEach(like => {
+                        if (!like.seen) {
+                            const likeRef = db.collection('likes').doc(like.id);
+                            batch.update(likeRef, { seen: true });
+                        }
+                    });
+                    
+                    await batch.commit();
+                    showToast('Tüm beğeniler okundu olarak işaretlendi', 'success');
+                    await loadUserLikes();
+                    showUserLikes();
+                    
+                } catch (error) {
+                    console.error('Beğeniler güncellenirken hata:', error);
+                }
+            }
+
+            // Arama modalını göster
+            function showSearchModal() {
+                const modalHTML = `
+                    <div class="modal" id="search-modal">
+                        <div class="modal-content" style="max-width: 600px;">
+                            <div class="modal-header">
+                                <h3>Profil Ara</h3>
+                                <button class="close-modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="margin-bottom: 24px;">
+                                    <div style="position: relative;">
+                                        <input type="text" id="search-profiles-input" 
+                                               placeholder="İsim, konum, ilgi alanı ara..."
+                                               style="width: 100%; padding: 16px 50px 16px 20px; border: 2px solid var(--border-color); border-radius: var(--radius-lg); font-size: 16px;">
+                                        <i class="fas fa-search" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-bottom: 20px;">
+                                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                                        <div>
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary);">Cinsiyet</label>
+                                            <select id="search-gender" style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: var(--radius-md);">
+                                                <option value="">Tümü</option>
+                                                <option value="male">Erkek</option>
+                                                <option value="female">Kadın</option>
+                                                <option value="other">Diğer</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-secondary);">Yaş Aralığı</label>
+                                            <div style="display: flex; gap: 8px;">
+                                                <input type="number" id="search-min-age" placeholder="Min" min="18" max="100" 
+                                                       style="flex: 1; padding: 12px; border: 2px solid var(--border-color); border-radius: var(--radius-md);">
+                                                <input type="number" id="search-max-age" placeholder="Max" min="18" max="100" 
+                                                       style="flex: 1; padding: 12px; border: 2px solid var(--border-color); border-radius: var(--radius-md);">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="max-height: 300px; overflow-y: auto; padding: 10px; border: 2px solid var(--border-color); border-radius: var(--radius-md);">
+                                    <div id="search-results">
+                                        <p style="text-align: center; color: var(--text-secondary); padding: 40px 20px;">
+                                            Arama yapmak için bir şeyler yazın...
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Modalı ekle
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                
+                // Event listener'lar
+                const modal = document.getElementById('search-modal');
+                const input = document.getElementById('search-profiles-input');
+                const closeBtn = modal.querySelector('.close-modal');
+                
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                input.focus();
+                
+                // Arama input'u
+                input.addEventListener('input', debounce(function() {
+                    performSearch();
+                }, 300));
+                
+                // Diğer filtreler
+                document.getElementById('search-gender').addEventListener('change', performSearch);
+                document.getElementById('search-min-age').addEventListener('input', performSearch);
+                document.getElementById('search-max-age').addEventListener('input', performSearch);
+                
+                // Kapatma
+                closeBtn.addEventListener('click', () => {
+                    modal.remove();
+                    document.body.style.overflow = 'auto';
+                });
+                
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+
+            // Arama yap
+            async function performSearch() {
+                const searchTerm = document.getElementById('search-profiles-input').value.toLowerCase().trim();
+                const gender = document.getElementById('search-gender').value;
+                const minAge = parseInt(document.getElementById('search-min-age').value) || 18;
+                const maxAge = parseInt(document.getElementById('search-max-age').value) || 100;
+                
+                let results = allUsers.filter(user => {
+                    // Temel filtreler
+                    if (user.uid === currentUser.uid) return false;
+                    if (!user.profileCompleted) return false;
+                    
+                    // Cinsiyet filtresi
+                    if (gender && user.gender !== gender) return false;
+                    
+                    // Yaş filtresi
+                    if (user.age < minAge || user.age > maxAge) return false;
+                    
+                    // Arama terimi
+                    if (searchTerm) {
+                        const searchFields = [
+                            user.name?.toLowerCase(),
+                            user.location?.toLowerCase(),
+                            user.bio?.toLowerCase(),
+                            ...(user.interests || []).map(i => i.toLowerCase())
+                        ];
+                        
+                        return searchFields.some(field => field && field.includes(searchTerm));
+                    }
+                    
+                    return true;
+                });
+                
+                displaySearchResults(results);
+            }
+
+            // Arama sonuçlarını göster
+            function displaySearchResults(results) {
+                const container = document.getElementById('search-results');
+                
+                if (results.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 40px 20px;">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <p style="color: var(--text-secondary);">Aramanızla eşleşen profil bulunamadı.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                results.slice(0, 20).forEach(user => {
+                    const userElement = document.createElement('div');
+                    userElement.className = 'profile-card fade-in';
+                    userElement.style.cssText = `
+                        margin-bottom: 16px;
+                        cursor: pointer;
+                    `;
+                    
+                    userElement.innerHTML = `
+                        <div class="profile-content" style="padding: 16px;">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <div style="width: 60px; height: 60px; background: var(--secondary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; font-weight: bold;">
+                                    ${user.name?.charAt(0) || '?'}
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; font-size: 18px; margin-bottom: 4px; color: var(--text-primary);">
+                                        ${user.name}
+                                        <span style="font-weight: normal; color: var(--text-secondary);"> • ${user.age} yaş</span>
+                                    </div>
+                                    <div style="color: var(--text-secondary); font-size: 14px; margin-bottom: 4px;">
+                                        <i class="fas fa-map-marker-alt"></i> ${user.location || 'Belirtilmemiş'}
+                                    </div>
+                                    <div style="color: var(--text-light); font-size: 13px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
+                                        ${user.bio || 'Henüz açıklama eklenmemiş'}
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" onclick="event.stopPropagation(); viewProfile('${user.id}')">
+                                    <i class="fas fa-eye"></i> Görüntüle
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    userElement.addEventListener('click', () => viewProfile(user.id));
+                    container.appendChild(userElement);
+                });
+            }
+
+            // Profil düzenleme sayfasını göster
+            function showProfileEditPage() {
+                document.getElementById('app-container').style.display = 'none';
+                
+                const editPageHTML = `
+                    <div id="profile-edit-page" style="min-height: 100vh; background: var(--bg-secondary);">
+                        <div class="container" style="max-width: 1200px;">
+                            <div style="padding: 20px 0;">
+                                <button class="btn btn-outline" id="back-from-edit" style="margin-bottom: 30px;">
+                                    <i class="fas fa-arrow-left"></i> Geri Dön
+                                </button>
+                                
+                                <div class="profile-header-detail">
+                                    <div class="profile-avatar-large" id="edit-avatar" style="cursor: pointer;">
+                                        ${currentUserData.name?.charAt(0) || '?'}
+                                        <div style="position: absolute; bottom: 10px; right: 10px; background: var(--primary-color); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                                            <i class="fas fa-camera"></i>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-detail">
+                                        <h1>Profilimi Düzenle</h1>
+                                        <div style="color: var(--text-secondary); margin-bottom: 20px;">
+                                            Profilinizi güncelleyin ve daha iyi eşleşmeler bulun
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-sections">
+                                    <div>
+                                        <div class="section-card">
+                                            <h2><i class="fas fa-user-edit"></i> Temel Bilgiler</h2>
+                                            <form id="edit-profile-form">
+                                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
+                                                    <div class="form-group">
+                                                        <label for="edit-name">Adınız *</label>
+                                                        <input type="text" id="edit-name" value="${currentUserData.name || ''}" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="edit-age">Yaş *</label>
+                                                        <input type="number" id="edit-age" value="${currentUserData.age || 25}" min="18" max="100" required>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 20px;">
+                                                    <div class="form-group">
+                                                        <label for="edit-gender">Cinsiyet *</label>
+                                                        <select id="edit-gender" required>
+                                                            <option value="">Seçiniz</option>
+                                                            <option value="male" ${currentUserData.gender === 'male' ? 'selected' : ''}>Erkek</option>
+                                                            <option value="female" ${currentUserData.gender === 'female' ? 'selected' : ''}>Kadın</option>
+                                                            <option value="other" ${currentUserData.gender === 'other' ? 'selected' : ''}>Diğer</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="edit-location">Konum *</label>
+                                                        <input type="text" id="edit-location" value="${currentUserData.location || ''}" required>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label for="edit-bio">Hakkınızda</label>
+                                                    <textarea id="edit-bio" rows="4" placeholder="Kendinizden bahsedin...">${currentUserData.bio || ''}</textarea>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        
+                                        <div class="section-card">
+                                            <h2><i class="fas fa-images"></i> Fotoğraflar</h2>
+                                            <div id="photos-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px;">
+                                                <div style="aspect-ratio: 1; background: var(--bg-secondary); border: 2px dashed var(--border-color); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                                                    <div style="text-align: center; color: var(--text-secondary);">
+                                                        <i class="fas fa-plus" style="font-size: 32px; margin-bottom: 8px;"></i>
+                                                        <div>Fotoğraf Ekle</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="section-card">
+                                            <h2><i class="fas fa-heart"></i> İlgi Alanları</h2>
+                                            <div id="edit-interests-container" style="max-height: 400px; overflow-y: auto; padding: 10px; background: var(--bg-secondary); border-radius: var(--radius-md);">
+                                                <!-- Interests will be loaded here -->
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="section-card">
+                                            <h2><i class="fas fa-sliders-h"></i> Tercihler</h2>
+                                            <div class="form-group">
+                                                <label for="edit-preferred-gender">Aradığım Cinsiyet</label>
+                                                <select id="edit-preferred-gender" style="width: 100%;">
+                                                    <option value="all">Farketmez</option>
+                                                    <option value="male">Erkek</option>
+                                                    <option value="female">Kadın</option>
+                                                    <option value="other">Diğer</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label>Yaş Aralığı</label>
+                                                <div style="display: flex; gap: 12px; align-items: center;">
+                                                    <input type="number" id="edit-min-age" min="18" max="100" value="18" style="flex: 1;">
+                                                    <span>ile</span>
+                                                    <input type="number" id="edit-max-age" min="18" max="100" value="50" style="flex: 1;">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="edit-distance">Maksimum Mesafe (km)</label>
+                                                <input type="range" id="edit-distance" min="1" max="500" value="100" style="width: 100%;">
+                                                <div style="text-align: center; color: var(--text-secondary); font-size: 14px;">
+                                                    <span id="edit-distance-value">100 km</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="section-card">
+                                            <h2><i class="fas fa-shield-alt"></i> Gizlilik</h2>
+                                            <div style="display: flex; flex-direction: column; gap: 16px;">
+                                                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                                                    <input type="checkbox" id="privacy-profile-visible" checked>
+                                                    <span>Profilim görünür olsun</span>
+                                                </label>
+                                                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                                                    <input type="checkbox" id="privacy-show-online">
+                                                    <span>Çevrimiçi durumumu göster</span>
+                                                </label>
+                                                <label style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
+                                                    <input type="checkbox" id="privacy-show-distance">
+                                                    <span>Uzaklığımı göster</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="display: flex; gap: 12px; margin-top: 20px;">
+                                            <button class="btn btn-primary" id="save-profile-changes" style="flex: 1;">
+                                                <i class="fas fa-save"></i> Değişiklikleri Kaydet
+                                            </button>
+                                            <button class="btn btn-outline" id="cancel-edit">
+                                                İptal
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Sayfayı ekle
+                document.body.insertAdjacentHTML('beforeend', editPageHTML);
+                
+                // İlgi alanlarını yükle
+                renderInterests('edit-interests-container', currentUserData.interests || []);
+                
+                // Event listener'lar
+                document.getElementById('back-from-edit').addEventListener('click', function() {
+                    document.getElementById('profile-edit-page').remove();
+                    document.getElementById('app-container').style.display = 'block';
+                });
+                
+                document.getElementById('cancel-edit').addEventListener('click', function() {
+                    document.getElementById('profile-edit-page').remove();
+                    document.getElementById('app-container').style.display = 'block';
+                });
+                
+                document.getElementById('save-profile-changes').addEventListener('click', saveProfileChanges);
+                
+                // Mesafe slider'ı
+                const distanceSlider = document.getElementById('edit-distance');
+                const distanceValue = document.getElementById('edit-distance-value');
+                
+                distanceSlider.addEventListener('input', function() {
+                    distanceValue.textContent = `${this.value} km`;
+                });
+            }
+
+            // Profil değişikliklerini kaydet
+            async function saveProfileChanges() {
+                // Form verilerini topla
+                const name = document.getElementById('edit-name').value.trim();
+                const age = parseInt(document.getElementById('edit-age').value);
+                const gender = document.getElementById('edit-gender').value;
+                const location = document.getElementById('edit-location').value.trim();
+                const bio = document.getElementById('edit-bio').value.trim();
+                
+                // İlgi alanlarını al
+                const interestCheckboxes = document.querySelectorAll('#edit-interests-container .interest-checkbox:checked');
+                const interests = Array.from(interestCheckboxes).map(cb => cb.value);
+                
+                // Validasyon
+                if (!name || !age || !gender || !location) {
+                    showToast('Lütfen tüm zorunlu alanları doldurun', 'error');
+                    return;
+                }
+                
+                if (interests.length < 3) {
+                    showToast('En az 3 ilgi alanı seçmelisiniz', 'error');
+                    return;
+                }
+                
+                try {
+                    // Güncelleme verisi
+                    const updateData = {
+                        name: name,
+                        age: age,
+                        gender: gender,
+                        location: location,
+                        bio: bio,
+                        interests: interests,
+                        preferences: {
+                            gender: document.getElementById('edit-preferred-gender').value,
+                            minAge: parseInt(document.getElementById('edit-min-age').value) || 18,
+                            maxAge: parseInt(document.getElementById('edit-max-age').value) || 50,
+                            maxDistance: parseInt(document.getElementById('edit-distance').value) || 100
+                        },
+                        privacy: {
+                            profileVisible: document.getElementById('privacy-profile-visible').checked,
+                            showOnline: document.getElementById('privacy-show-online').checked,
+                            showDistance: document.getElementById('privacy-show-distance').checked
+                        },
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastActive: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    
+                    // Firestore'da güncelle
+                    await db.collection('users').doc(currentUser.uid).update(updateData);
+                    
+                    // Local veriyi güncelle
+                    Object.assign(currentUserData, updateData);
+                    
+                    showToast('Profil başarıyla güncellendi!', 'success');
+                    
+                    // Ana sayfaya dön
+                    setTimeout(() => {
+                        document.getElementById('profile-edit-page').remove();
+                        document.getElementById('app-container').style.display = 'block';
+                        
+                        // UI'yı yenile
+                        updateUserUI();
+                        loadProfiles();
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Profil güncellenirken hata:', error);
+                    showToast('Güncelleme başarısız', 'error');
+                }
+            }
+
+            // Admin panelini göster
+            async function showAdminPanel() {
+                elements.mainFeed.style.display = 'none';
+                elements.adminPanel.style.display = 'block';
+                
+                try {
+                    // Toplam kullanıcı
+                    const usersSnapshot = await db.collection('users').get();
+                    document.getElementById('admin-total-users').textContent = usersSnapshot.size;
+                    
+                    // Bugünkü aktif kullanıcılar
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    let todayActive = 0;
+                    usersSnapshot.forEach(doc => {
+                        const userData = doc.data();
+                        const lastActive = userData.lastActive?.toDate?.() || new Date(0);
+                        if (lastActive >= today) todayActive++;
+                    });
+                    document.getElementById('admin-today-active').textContent = todayActive;
+                    
+                    // Toplam eşleşme
+                    const matchesSnapshot = await db.collection('matches').get();
+                    document.getElementById('admin-total-matches').textContent = matchesSnapshot.size;
+                    
+                    // Bugün kayıtlı kullanıcılar
+                    let newToday = 0;
+                    usersSnapshot.forEach(doc => {
+                        const userData = doc.data();
+                        const createdAt = userData.createdAt?.toDate?.() || new Date(0);
+                        if (createdAt >= today) newToday++;
+                    });
+                    document.getElementById('admin-new-today').textContent = newToday;
+                    
+                } catch (error) {
+                    console.error('Admin paneli yüklenirken hata:', error);
+                }
+            }
+
+            // FAB butonu
+            elements.fab.addEventListener('click', function() {
+                showModal('profile-modal');
+            });
+
+            // Modal kapatma
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    if (modal) hideModal(modal.id);
+                });
+            });
+
+            // Modal dışına tıklama ile kapatma
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        hideModal(this.id);
+                    }
+                });
+            });
+
+            // Bildirim raporu modalı
+            function showReportModal(profileId, profileName) {
+                if (confirm(`${profileName} kullanıcısını şikayet etmek istediğinize emin misiniz?`)) {
+                    showToast('Şikayetiniz alındı. Teşekkür ederiz.', 'info');
+                }
+            }
+
+            // Yeni mesaj modalı
+            function showNewMessageModal() {
+                const modalHTML = `
+                    <div class="modal" id="new-message-modal">
+                        <div class="modal-content" style="max-width: 500px;">
+                            <div class="modal-header">
+                                <h3>Yeni Mesaj</h3>
+                                <button class="close-modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div style="margin-bottom: 20px;">
+                                    <input type="text" id="new-message-search" placeholder="Kullanıcı ara..." 
+                                           style="width: 100%; padding: 14px 20px; border: 2px solid var(--border-color); border-radius: var(--radius-lg);">
+                                </div>
+                                
+                                <div id="new-message-users" style="max-height: 300px; overflow-y: auto;">
+                                    <!-- Eşleşmeler listelenecek -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                const modal = document.getElementById('new-message-modal');
+                modal.classList.add('active');
+                
+                // Eşleşmeleri yükle
+                loadMatchesForNewMessage();
+                
+                // Arama
+                document.getElementById('new-message-search').addEventListener('input', debounce(searchUsersForMessage, 300));
+                
+                // Kapatma
+                modal.querySelector('.close-modal').addEventListener('click', () => {
+                    modal.remove();
+                    document.body.style.overflow = 'auto';
+                });
+                
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.remove();
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+
+            // Yeni mesaj için eşleşmeleri yükle
+            async function loadMatchesForNewMessage() {
+                try {
+                    const container = document.getElementById('new-message-users');
+                    container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Yükleniyor...</p></div>';
+                    
+                    const matchesSnapshot = await db.collection('matches')
+                        .where('users', 'array-contains', currentUser.uid)
+                        .get();
+                    
+                    const users = [];
+                    for (const doc of matchesSnapshot.docs) {
+                        const match = doc.data();
+                        const otherUserId = match.users.find(id => id !== currentUser.uid);
+                        const userDoc = await db.collection('users').doc(otherUserId).get();
+                        
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            users.push({
+                                id: otherUserId,
+                                name: userData.name,
+                                avatar: userData.name?.charAt(0) || '?',
+                                matchId: doc.id
+                            });
+                        }
+                    }
+                    
+                    renderUsersForMessage(users);
+                    
+                } catch (error) {
+                    console.error('Eşleşmeler yüklenirken hata:', error);
+                }
+            }
+
+            // Yeni mesaj için kullanıcıları render et
+            function renderUsersForMessage(users) {
+                const container = document.getElementById('new-message-users');
+                
+                if (users.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state" style="padding: 40px 20px;">
+                            <p style="color: var(--text-secondary);">Henüz mesajlaşabileceğiniz eşleşmeniz yok.</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                users.forEach(user => {
+                    const userElement = document.createElement('div');
+                    userElement.style.cssText = `
+                        padding: 16px;
+                        border-bottom: 1px solid var(--border-color);
+                        cursor: pointer;
+                        transition: var(--transition);
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                    `;
+                    
+                    userElement.innerHTML = `
+                        <div style="width: 50px; height: 50px; background: var(--secondary-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; font-weight: bold;">
+                            ${user.avatar}
+                        </div>
+                        <div style="font-weight: 600; color: var(--text-primary);">
+                            ${user.name}
+                        </div>
+                    `;
+                    
+                    userElement.addEventListener('click', () => {
+                        document.getElementById('new-message-modal').remove();
+                        openChat(user.matchId, user);
+                    });
+                    
+                    container.appendChild(userElement);
+                });
+            }
+
+            // Eşleşme sayısını güncelle
+            async function updateMatchesCount() {
+                try {
+                    const userDoc = await db.collection('users').doc(currentUser.uid).get();
+                    if (userDoc.exists) {
+                        const data = userDoc.data();
+                        const matchesCount = data.matches?.length || 0;
+                        
+                        // Firestore'da güncelle
+                        await db.collection('users').doc(currentUser.uid).update({
+                            matches: matchesCount
+                        });
+                    }
+                } catch (error) {
+                    console.error('Eşleşme sayısı güncellenirken hata:', error);
+                }
+            }
+
+            console.log('Uygulama başlatıldı');
+        }
+    </script>
+</body>
+</html>
